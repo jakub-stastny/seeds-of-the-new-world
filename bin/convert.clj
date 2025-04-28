@@ -17,6 +17,9 @@
    4 "subsection"
    5 "subsubsection"})
 
+(defn comment-line? [line]
+  (boolean (re-find #"^\s*#\s+" line)))
+
 (defn list-item? [line]
   (re-matches #"^\s*-\s+.+$" line))
 
@@ -68,6 +71,10 @@
       (let [line (first lines)
             rest-lines (rest lines)]
         (cond
+          ;; Skip comments
+          (comment-line? line)
+          (recur rest-lines out state)
+
           ;; block start
           (block-start? line)
           (let [out (if (= state :list) (conj out "\\stopitemize") out)]

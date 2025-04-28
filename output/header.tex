@@ -1,4 +1,4 @@
-\setuppapersize[A5][A5] % or whatever you prefer
+\setuppapersize[A4][A4]
 \setuplayout[
   backspace=15mm,
   topspace=15mm,
@@ -8,35 +8,54 @@
   height=middle,
 ]
 
+\setuppagenumbering[
+  location=footer,
+]
+
+\setupindenting[no]
+\setupwhitespace[big]
+
 \setupbodyfont[palatino,11pt] % or latin-modern, whatever font you prefer
 
+\definecolor[myred][r=0.8,g=0.1,b=0.1]
+\definecolor[indigo][r=0.2, g=0.3, b=0.8]
+\definecolor[mysectionblue][r=0.3, g=0.4, b=0.7]
+\definecolor[mysubsectionblue][r=0.4, g=0.5, b=0.7]
+
 \setuphead[part][
-  style={\tfd}, % bigger font for \part
+  placehead=yes, % show part (hidden by default)
+  style={\bfd}, % bigger font for \part
+  color=myred,
+  align=middle,
   number=no,    % no numbers for \part
   before={\blank[3*big]},
   after={\blank[3*big]},
   page=yes,     % start \part on new page
 ]
 
+\definefont[ChapterFont][SerifBold at 18pt]
 \setuphead[chapter][
-  style={\bfd},
-  number=yes,
+  style={\ChapterFont},
+  color=indigo,
+  align=middle,
+  number=no,
   before={\blank[2*big]},
   after={\blank[2*big]},
-  page=yes, % start chapter on new page
 ]
 
 \setuphead[section][
   style={\bfa},
-  number=yes,
-  before={\blank[big]},
-  after={\blank[medium]},
+  color=mysectionblue,
+  number=no,
+  before={\blank[2*big]},
+  after={\blank[small]},
 ]
 
 \setuphead[subsection][
   style={\bf},
-  number=yes,
-  before={\blank[medium]},
+  color=mysubsectionblue,
+  number=no,
+  before={\blank[big]},
   after={\blank[small]},
 ]
 
@@ -62,17 +81,15 @@
 
 \define\stopdisclaimer{}
 
-% Footnotes already work: \footnote{text}
-
-% TITLE PAGE (optional)
+% Title page.
 \starttext
 \startstandardmakeup
-  {\tfd Your Book Title}\par
+  {\tfd Seeds of The New World}\par
   \blank[2*big]
-  {\bfa Your Subtitle or Author}
+  {\bfa\em From the demolition site back to connection to the Spirit, the Earth and each other.}
+  \blank[2*big]
+  {\bfa Jakub Šťastný}
 \stopstandardmakeup
 
-% Include the actual content
 \input content.tex
-
 \stoptext

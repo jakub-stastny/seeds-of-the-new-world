@@ -1,0 +1,78 @@
+\setuppapersize[A5][A5] % or whatever you prefer
+\setuplayout[
+  backspace=15mm,
+  topspace=15mm,
+  header=10mm,
+  footer=10mm,
+  width=middle,
+  height=middle,
+]
+
+\setupbodyfont[palatino,11pt] % or latin-modern, whatever font you prefer
+
+\setuphead[part][
+  style={\tfd}, % bigger font for \part
+  number=no,    % no numbers for \part
+  before={\blank[3*big]},
+  after={\blank[3*big]},
+  page=yes,     % start \part on new page
+]
+
+\setuphead[chapter][
+  style={\bfd},
+  number=yes,
+  before={\blank[2*big]},
+  after={\blank[2*big]},
+  page=yes, % start chapter on new page
+]
+
+\setuphead[section][
+  style={\bfa},
+  number=yes,
+  before={\blank[big]},
+  after={\blank[medium]},
+]
+
+\setuphead[subsection][
+  style={\bf},
+  number=yes,
+  before={\blank[medium]},
+  after={\blank[small]},
+]
+
+% Define disclaimer environment
+\defineblank
+  [disclaimerbeforeafter]
+  [2*big]
+
+\definehead[disclaimer][chapter]
+\setuphead[disclaimer][
+  style={\bf\it},
+  number=no,
+  before={\blank[disclaimerbeforeafter]},
+  after={\blank[disclaimerbeforeafter]},
+]
+
+\define[2]\startdisclaimer
+  {\startframed[frame=on,background=color,backgroundcolor=lightgray]
+   \bf Disclaimer\par
+   \blank
+   #2
+   \stopframed}
+
+\define\stopdisclaimer{}
+
+% Footnotes already work: \footnote{text}
+
+% TITLE PAGE (optional)
+\starttext
+\startstandardmakeup
+  {\tfd Your Book Title}\par
+  \blank[2*big]
+  {\bfa Your Subtitle or Author}
+\stopstandardmakeup
+
+% Include the actual content
+\input content.tex
+
+\stoptext

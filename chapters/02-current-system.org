@@ -1,42 +1,42 @@
-* An Economy Built to Exploit
+* An economy built to exploit
 This chapter is very technical and not everyone may feel like reading it, or have the time for that matter. All you really need to know is that /the global system was built to extract, exploit, and hollow out life — and it is now collapsing under the weight of its own lies/.
 
 ** How the system works
 
-*** Global Interdependence
+*** Global interdependence
 
 The global economy is a web of interlocked national systems, tied through flows of trade, finance, labour, and resources. A farmer grows wheat in Kansas, sells it to China; China uses the earned dollars to buy U.S. bonds; the U.S. uses bond sales to finance its deficits. Every node feeds another. Efficiency rose. Fragility exploded.
 
-*** The Rise of Hyperglobalisation
+*** The rise of hyperglobalisation
 
 Globalisation accelerated this interdependence. It began with colonial empires, hardened through the Industrial Revolution, and metastasised after 1945 with Bretton Woods. After 1990, deregulation and digital technologies birthed hyperglobalisation: instant capital flows, stretched and fragmented supply chains, and a world lashed together by finance rather than culture.
 
-*** The Fall of Alternatives
+*** The fall of alternatives
 
 The fall of the Soviet Union in 1991 removed the last major alternative model to Western capitalism. Without a global counterweight, financial capitalism expanded unchecked, transforming globalisation from an economic trend into a planetary doctrine. Everything became a market. Every barrier to speculative capital was dismantled. The collapse of one empire cleared the field for the overreach of another.
 
-*** China’s Divergent Strategy
+*** China’s divergent strategy
 
 China took a different path. While it opened markets to global trade, it never fully surrendered control over capital or production. It used globalisation to strengthen the state, not dismantle it. Western leaders assumed that market integration would inevitably produce Western-style democracies. Instead, China proved that it was possible to exploit global capitalism without adopting its values. Today, it stands not as a disciple of the collapsing system, but as a competitor within it — a power that may dominate the transition phase, but is still bound to the same underlying dynamics of exploitation and fragility.
 
-*** Supply Chain Fragility Exposed
+*** Supply chain fragility exposed
 
 Beyond financial flows, the modern economy is built on intricate supply chains — a global circulatory system of ships, trucks, ports, and warehouses moving food, medicine, and critical goods across continents. These chains are invisible when they work, but brutally visible when they break. They depend on cheap oil, stable currencies, and political trust. Without them, production itself becomes meaningless. A factory in China, a farm in Argentina, a mine in Congo — none of it matters if the goods can't move. Globalisation did not just globalise production; it globalised dependency.
 
 The COVID-19 crisis exposed just how brittle these chains were. Ports jammed. Ships waited offshore for weeks. Basic goods vanished from store shelves. Post-COVID, supply chains have never fully recovered. Delays, shortages, and systemic instability are now permanent features, not anomalies. The once-smooth circulatory system of the global economy is now clogged, fractured, and gasping.
 
-*** The Cultural Collapse
+*** The cultural collapse
 
 The culture of modernity treated real production — farming, weaving, crafting — as backward or embarrassing. Children grew up thinking milk came from factories, not cows. Skills essential for life vanished, replaced by "bullshit jobs" — shuffling numbers in Excel, massaging statistics to meet corporate KPIs without changing anything real, or debating invented genders on Twitter. When a civilisation forgets how to feed, clothe, and heal itself, collapse is not a question of if, but when.
 
-*** Enforcement by Global Institutions
+*** Enforcement by global institutions
 
 The machinery of globalisation did not evolve spontaneously. It was engineered and enforced by institutions built to sustain it.
 The International Monetary Fund (IMF), the World Bank, and the World Trade Organization (WTO) did not exist to nurture sovereign development — they existed to integrate nations into the global system on terms favourable to financial capital. Loans came with conditions: deregulate, privatise, open borders to foreign capital, suppress labour rights.
 Trade agreements embedded asymmetries into law. Tariffs fell — but only for goods the West needed cheap. Intellectual property, financial services, and high-value goods remained heavily protected.
 When persuasion failed, pressure escalated: sanctions, destabilisations, even military interventions. Globalisation was never voluntary. It was enforced.
 
-*** Key Drivers of Collapse
+*** Key drivers of collapse
 
 Key drivers were:
 - Lowering trade and financial barriers.
@@ -71,7 +71,7 @@ Fiat didn’t cause the separation from life. It completed it.
 
 Financialisation detached wealth from production, but it also set the stage for something even deeper: the hollowing of meaning itself.
 
-*** The Loss of Meaning
+*** The loss of meaning
 
 The loss of meaning is no longer abstract. It is lived daily by millions who sit at desks, staring at screens, moving information from one box to another, knowing — even if they cannot fully articulate it — that none of it matters. Work once meant producing something tangible: food, shelter, medicine, art. Today, most "work" has become soul-destroying: maintaining illusions, manufacturing compliance, chasing meaningless metrics. The result is everywhere — rising depression, mass alcohol and drug abuse, soaring suicide rates. Chronic dissatisfaction is not a glitch. It is life’s final protest against a system that demands energy without offering purpose.
 
@@ -158,10 +158,10 @@ The only way forward is re-rooting value in life itself: land, ecosystems, commu
 
 The clock has already struck midnight. What remains is simple: root again in life — or be swept away by what you refused to honour.
 
-* The Great Disintegration
+* The great disintegration
 /This chapter serves mainly as a reference of ongoing global crises./
 
-** Irreversible Damages: The Loss of Foundations
+** Irreversible damages: the loss of foundations
 
 These damages cannot be undone within human timescales. They represent the permanent wounds of this collapse cycle.
 
@@ -189,7 +189,7 @@ These damages cannot be undone within human timescales. They represent the perma
 
 No future technology can replace these lost foundations. We are entering a future permanently impoverished by these wounds.*
 
-** Long Transition Struggles: Painful but Adaptable
+** Long transition struggles: painful but adaptable
 
 These crises will reshape societies painfully but are ultimately survivable through deep adaptation.
 
@@ -213,7 +213,7 @@ These crises will reshape societies painfully but are ultimately survivable thro
 
 These crises will break current systems but allow new ones to grow, grounded in a different relationship to energy, land, and community.*
 
-** Surface Crises: Symptoms of Transition
+** Surface crises: symptoms of transition
 
 These visible crises are brutal but do not spell final extinction. They are the noise and smoke of a collapsing system.
 
@@ -238,7 +238,7 @@ These visible crises are brutal but do not spell final extinction. They are the 
 
 Surface crises are terrifying but they are the symptoms, not the cause. Systems can regrow — if the root disconnection is addressed.*
 
-** Conclusion: The Three Faces of Collapse
+** Conclusion: the three faces of collapse
 
 Collapse is not uniform. Some losses are final. Some pains are transitional. Some crises are symptoms of a dying way of life, not of life itself.
 

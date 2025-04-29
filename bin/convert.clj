@@ -81,7 +81,9 @@
                            (map (fn [word]
                                   (if (not (lowercase-or-titlecase? word))
                                     word
-                                    (str/lower-case word))))
+                                    (if (= word (str/lower-case word))
+                                      (str/lower-case word)
+                                      word)))) ; preserve TitleCase words!
                            (str/join " "))))))))
 
 (defn slugify [s]

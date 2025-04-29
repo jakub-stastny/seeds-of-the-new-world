@@ -13,7 +13,8 @@
    "warning" "warning"
    "quote" "blockquote"
    "note" "note"
-   "tip" "tip"})
+   ;; If we use a custom block, GH won't show it.
+   "example" "tip"})
 
 (def heading-levels
   {1 "part"

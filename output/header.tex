@@ -137,10 +137,17 @@
    corner=round,
    rulethickness=0pt,
    width=\textwidth,
-   before={\blank[small]},
-   after={\blank[small]},
+   before={\blank[medium]},
+   after={\blank[medium]},
    offset=0.5em,
    loffset=1em,
    roffset=1em,
    boffset=1em,
-   toffset=1em]
+   toffset=1em,
+   % now allow passing title
+   beforehead={\bf\blank[small]},
+   afterhead={\blank[small]},
+   style=\it, % body style (optional)
+   titlestyle=\bf, % heading style
+   title={}, % default empty
+  ]

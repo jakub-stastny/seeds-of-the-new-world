@@ -32,7 +32,18 @@
   (when-let [[_ block-type params] (re-find #"(?i)^#\+begin_(\w+)(.*)" line)]
     (when-let [env (get block-types (str/lower-case block-type))]
       (let [trimmed (str/trim params)]
-        {:env env :title (when (seq trimmed) trimmed)}))))
+        (cond
+          ;; case: quoted title → extract contents
+          (re-matches #"^\"(.+)\"$" trimmed)
+          {:env env :title (second (re-matches #"^\"(.+)\"$" trimmed))}
+
+          ;; case: non-empty unquoted stuff → treat as args
+          (seq trimmed)
+          {:env env :args trimmed}
+
+          ;; otherwise
+          :else
+          {:env env})))))
 
 (defn block-end? [line]
   (some->> (re-find #"(?i)^#\+end_(\w+)" line)
@@ -166,6 +177,7 @@
           ;; Start of a block
           (block-start? line)
           (let [{:keys [env title]} (block-start? line)
+                _ (if title (dbg :env env :title title)) ;;;;
                 new-out (if (= state :list) (conj out "\\stopitemize") out)
                 start-block (cond
                               (= env "blockquote")
@@ -176,7 +188,6 @@
 
                               :else
                               [(str "\\start" env)])]
-            (dbg :e env :t title) ;;;
             (recur rest-lines (into new-out start-block) :block))
 
           (block-end? line)

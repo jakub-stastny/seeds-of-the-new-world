@@ -34,6 +34,9 @@
 ]
 
 \definefont[ChapterFont][SerifBold at 18pt]
+\definefont[MainTitleFont][Serif at 24pt]
+\definefont[MainSubtitleFont][SerifItalic at 15pt]
+\definefont[TitleFont][Serif at 16pt]
 \setuphead[chapter][
   style={\ChapterFont},
   color=indigo,
@@ -88,3 +91,24 @@
 %%   level=chapter,
 %%   alternative=c,
 %% ]
+
+\def\TitlePage#1#2{%
+  \startstandardmakeup
+  \startalignment[center]
+    \vskip 6cm
+    {\MainTitleFont #1}\par
+    \blank[big]
+
+    \startnarrower
+    \setupinterlinespace[5ex]
+    \color[darkgray]{\MainSubtitleFont #2}
+    \stopnarrower
+
+    \blank[3*big]
+    {\TitleFont Jakub Šťastný}\par
+    \blank[2*big]
+    {\TitleFont\date}
+    \vfill
+  \stopalignment
+  \stopstandardmakeup
+}

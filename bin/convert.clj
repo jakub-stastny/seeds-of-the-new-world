@@ -57,7 +57,7 @@
       ;; Italic: /italic/
       (str/replace #"(?<!\w)/(.*?)/(?!\w)" "\\\\emph{$1}")
       ;; Bold: *bold*
-      (str/replace #"(?<!\w)\*(.*?)\*(?!\w)" "\\\\bf {$1}")))
+      (str/replace #"(?<!\w)\*(.*?)\*(?!\w)" "{\\\\bf $1}")))
 
 (defn process-lines [lines]
   (loop [lines lines

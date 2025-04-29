@@ -177,14 +177,14 @@
           ;; Start of a block
           (block-start? line)
           (let [{:keys [env title]} (block-start? line)
-                _ (if title (dbg :env env :title title)) ;;;;
                 new-out (if (= state :list) (conj out "\\stopitemize") out)
                 start-block (cond
                               (= env "blockquote")
                               ["\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
 
                               title
-                              [(str "\\start" env "[title={" title "}]")] ; If there’s a title, inject it
+                              ;; [(str "\\start" env "[title={" title "}]")] ; If there’s a title, inject it
+                              [(str "\\start" env) "\\tiptitle{" title "}"]
 
                               :else
                               [(str "\\start" env)])]

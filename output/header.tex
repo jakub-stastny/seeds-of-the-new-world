@@ -151,3 +151,10 @@
    titlestyle=\bf, % heading style
    title={}, % default empty
   ]
+
+\definecolor[TipTitleColor][r=0.1, g=0.4, b=0.1] % dark green, tweak as you like
+
+\def\tiptitle#1{%
+  {\bf\color[TipTitleColor]{#1}}\par
+  \blank[small]%
+}

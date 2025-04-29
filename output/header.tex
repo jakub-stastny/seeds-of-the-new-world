@@ -126,3 +126,21 @@
   [state=start,
    color=mysectionblue,  % Link color
    style=normal] % No underline, no bold
+
+\definecolor[TipBackground][r=0.90,g=1.00,b=0.90] % very light green
+
+\defineframedtext
+  [tip]
+  [background=color,
+   backgroundcolor=TipBackground,
+   frame=off,
+   corner=round,
+   rulethickness=0pt,
+   width=\textwidth,
+   before={\blank[small]},
+   after={\blank[small]},
+   offset=0.5em,
+   loffset=1em,
+   roffset=1em,
+   boffset=1em,
+   toffset=1em]

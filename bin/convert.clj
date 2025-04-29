@@ -8,7 +8,8 @@
   {"disclaimer" "disclaimer"
    "warning" "warning"
    "quote" "blockquote"
-   "note" "note"})
+   "note" "note"
+   "tip" "tip"})
 
 (def heading-levels
   {1 "part"

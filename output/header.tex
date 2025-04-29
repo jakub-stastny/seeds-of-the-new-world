@@ -1,4 +1,5 @@
 \setuppapersize[A4][A4]
+\enableregime[utf]
 \setuplayout[
   backspace=15mm,
   topspace=15mm,
@@ -16,6 +17,16 @@
 \setupwhitespace[big]
 
 \setupbodyfont[palatino,11pt] % or latin-modern, whatever font you prefer
+
+\setupdelimitedtext[blockquote][
+  style=italic,
+  color=darkgray,
+  margin=standard,
+  before={\quotation\bgroup},
+  after={\egroup},
+]
+  %% [style=\slx,
+  %%  before={\setupinterlinespace[line=2.4ex]}]
 
 \definecolor[myred][r=0.8,g=0.1,b=0.1]
 \definecolor[indigo][r=0.2, g=0.3, b=0.8]
@@ -104,11 +115,11 @@
     \color[darkgray]{\MainSubtitleFont #2}
     \stopnarrower
 
-    \blank[3*big]
+    \vfill
     {\TitleFont Jakub Šťastný}\par
     \blank[2*big]
     {\TitleFont\date}
-    \vfill
+    %% \vfill
   \stopalignment
   \stopstandardmakeup
 }

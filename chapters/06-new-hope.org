@@ -6,7 +6,9 @@
 
 ** Permaculture
 
-  https://www.resilience.org/stories/2020-05-15/fruit-trenches-cultivating-subtropical-plants-in-freezing-temperatures/
+  [[https://www.resilience.org/stories/2020-05-15/fruit-trenches-cultivating-subtropical-plants-in-freezing-temperatures/][Citrus in USSR]]
+
+  [[#introduction][Introduction]]
 
 ** New non-tech
 
@@ -14,7 +16,7 @@
 
   We are stuck in the old, that we are oblivious to the new. We have our gaze fixed on the demolition site that we do not see the cherry trees flourishing above it.
 
-  https://www.bbc.com/future/article/20240419-the-worms-that-eat-through-plastic
+  [[https://www.bbc.com/future/article/20240419-the-worms-that-eat-through-plastic]]
 
 ** What I'm doing
 

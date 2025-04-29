@@ -84,13 +84,45 @@
                                     (str/lower-case word))))
                            (str/join " "))))))))
 
+(defn slugify [s]
+  (-> s
+      str/lower-case
+      (str/replace #"[^a-z0-9]+" "-")
+      (str/replace #"(^-|-$)" "")))
+
 (defn process-heading [line]
   (let [level (count (re-find #"^\*+" line))
         title (str/trim (subs line level))
         heading-type (get heading-levels level)
         format-fn (if (<= level 2) chapter-case sentence-case)]
     (when heading-type
-      (str "\\" heading-type "{" (format-fn title) "}"))))
+      (str "\\" heading-type "[" (slugify title) "]{" (format-fn title) "}"))))
+
+;; [[https://example.com][Example Site]]
+;; \goto{Example Site}[url(https://example.com)]
+;;
+;; [[#intro][Introduction Section]]
+;; \goto{Introduction Section}[intro]
+;;
+;; Created by: \chapter[chapter-id]{Chapter Title}
+(defn process-org-link [link]
+  (cond
+    ;; [[https://example.com][Custom Text]]
+    (re-matches #"\[\[(.*?)\]\[(.*?)\]\]" link)
+    (let [[_ target text] (re-matches #"\[\[(.*?)\]\[(.*?)\]\]" link)]
+      (if (re-matches #"https?://.*" target)
+        (str "\\goto{" text "}[url(" target ")]")
+        (let [clean-target (if (str/starts-with? target "#")
+                             (subs target 1)
+                             target)]
+          (str "\\goto{" text "}[" clean-target "]"))))
+
+    ;; [[https://example.com]]
+    (re-matches #"\[\[(https?://.*?)\]\]" link)
+    (let [[_ target] (re-matches #"\[\[(https?://.*?)\]\]" link)]
+      (str "\\goto{" target "}[url(" target ")]"))
+
+    :else link))
 
 (defn convert-inline [line]
   (-> line
@@ -102,9 +134,12 @@
       ;; Apostrophes
       (str/replace #"’" "'")
       ;; Italic: /italic/
-      (str/replace #"(?<!\w)/(.*?)/(?!\w)" "\\\\emph{$1}")
+      (str/replace #"(?<=^|\s)/(.+?)/(?=\s|\.|,|;|:|$)" "\\\\emph{$1}")
       ;; Bold: *bold*
-      (str/replace #"(?<!\w)\*(.*?)\*(?!\w)" "{\\\\bf $1}")))
+      (str/replace #"(?<=^|\s)\*(.+?)\*(?=\s|\.|,|;|:|$)" "{\\\\bf }")
+      ;; Links
+      (str/replace #"\[\[.*?\]\[.*?\]\]|\[\[.*?\]\]"
+                   (fn [m] (process-org-link m)))))
 
 (defn process-lines [lines]
   (loop [lines lines

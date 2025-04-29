@@ -41,33 +41,56 @@
 (def stopwords
   #{"a" "an" "the" "and" "but" "or" "for" "nor" "on" "at" "to" "from" "by" "of" "in" "with" "over"})
 
+(defn all-caps? [word]
+  (re-matches #"[A-Z0-9\+\-]+" word))
+
+(defn lowercase-or-titlecase? [word]
+  (let [lower (str/lower-case word)
+        title (str (str/upper-case (subs word 0 1))
+                   (str/lower-case (subs word 1)))]
+    (or (= word lower) (= word title))))
+
 (defn title-case [s]
   (let [words (str/split s #"\s+")
         count-words (count words)]
     (->> words
          (map-indexed (fn [i word]
-                        (let [word-lc (str/lower-case word)]
-                          (if (or (= i 0) (= i (dec count-words)) (not (stopwords word-lc)))
-                            (str/capitalize word-lc)
-                            word-lc))))
+                        (cond
+                          (not (lowercase-or-titlecase? word)) word ; leave weird or ALL-CAPS untouched
+                          (or (= i 0) (= i (dec count-words)) (not (stopwords (str/lower-case word))))
+                          (str/capitalize (str/lower-case word))
+                          :else
+                          (str/lower-case word))))
          (str/join " "))))
 
+;; Moc roztahany.
+(defn chapter-case [s]
+  (str/replace (title-case s) ":" "\\colon~"))
+
 (defn sentence-case [s]
-  (let [s (str/trim s)]
-    (if (empty? s)
-      s
-      (str (str/upper-case (subs s 0 1))
-           (str/lower-case (subs s 1))))))
+  (let [words (str/split (str/trim s) #"\s+")]
+    (if (empty? words)
+      ""
+      (str (let [first-word (first words)]
+             (if (not (lowercase-or-titlecase? first-word))
+               first-word
+               (str (str/upper-case (subs first-word 0 1))
+                    (str/lower-case (subs first-word 1)))))
+           (when (> (count words) 1)
+             (str " " (->> (rest words)
+                           (map (fn [word]
+                                  (if (not (lowercase-or-titlecase? word))
+                                    word
+                                    (str/lower-case word))))
+                           (str/join " "))))))))
 
 (defn process-heading [line]
   (let [level (count (re-find #"^\*+" line))
         title (str/trim (subs line level))
         heading-type (get heading-levels level)
-        formatted-title (if (<= level 2)
-                          (title-case title)
-                          (sentence-case title))]
+        format-fn (if (<= level 2) chapter-case sentence-case)]
     (when heading-type
-      (str "\\" heading-type "{" formatted-title "}"))))
+      (str "\\" heading-type "{" (format-fn title) "}"))))
 
 (defn convert-inline [line]
   (-> line

@@ -23,7 +23,7 @@
    5 "subsubsection"})
 
 (defn comment-line? [line]
-  (boolean (re-find #"^\s*#\s+" line)))
+  (boolean (re-find #"^\s*#(?!\s*\\)" line)))
 
 (defn list-item? [line]
   (re-matches #"^\s*-\s+.+$" line))
@@ -144,6 +144,8 @@
 
 (defn convert-inline [line]
   (-> line
+      ;; TeX comments (# \page).
+      (str/replace #"^\s*#\s+" "")
       ;; Footnotes
       (str/replace #"\[fn::([^\]]+)\]" "\\\\footnote{$1}")
       ;; Quotes

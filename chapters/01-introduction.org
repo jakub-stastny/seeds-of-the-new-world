@@ -9,7 +9,7 @@ The goal here is not to mourn what’s dying, but to understand why it’s happe
 
 No saviour is coming. The responsibility, and the opportunity, are ours. Will you take it?
 
-\page
+# \page
 
 ** Signs of systemic failure
 

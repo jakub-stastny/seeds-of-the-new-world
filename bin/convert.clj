@@ -38,12 +38,36 @@
 (defn heading-line? [line]
   (re-matches #"^\*+ .+" line))
 
+(def stopwords
+  #{"a" "an" "the" "and" "but" "or" "for" "nor" "on" "at" "to" "from" "by" "of" "in" "with" "over"})
+
+(defn title-case [s]
+  (let [words (str/split s #"\s+")
+        count-words (count words)]
+    (->> words
+         (map-indexed (fn [i word]
+                        (let [word-lc (str/lower-case word)]
+                          (if (or (= i 0) (= i (dec count-words)) (not (stopwords word-lc)))
+                            (str/capitalize word-lc)
+                            word-lc))))
+         (str/join " "))))
+
+(defn sentence-case [s]
+  (let [s (str/trim s)]
+    (if (empty? s)
+      s
+      (str (str/upper-case (subs s 0 1))
+           (str/lower-case (subs s 1))))))
+
 (defn process-heading [line]
-  (let [m (re-matches #"^(\*+) (.+)" line)
-        stars (count (get m 1))
-        title (get m 2)
-        command (get heading-levels stars)]
-    (str "\\" command "{" title "}")))
+  (let [level (count (re-find #"^\*+" line))
+        title (str/trim (subs line level))
+        heading-type (get heading-levels level)
+        formatted-title (if (<= level 2)
+                          (title-case title)
+                          (sentence-case title))]
+    (when heading-type
+      (str "\\" heading-type "{" formatted-title "}"))))
 
 (defn convert-inline [line]
   (-> line

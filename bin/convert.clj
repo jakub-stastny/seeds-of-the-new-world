@@ -4,6 +4,10 @@
   (:require [clojure.string :as str]
             [babashka.fs :as fs]))
 
+;; Bypass STDOUT redirect.
+(defn dbg [& args]
+  (binding [*out* *err*] (apply prn args)))
+
 (def block-types
   {"disclaimer" "disclaimer"
    "warning" "warning"
@@ -25,10 +29,10 @@
   (re-matches #"^\s*-\s+.+$" line))
 
 (defn block-start? [line]
-  (some->> (re-find #"(?i)^#\+begin_(\w+)" line)
-           (second)
-           (str/lower-case)
-           (get block-types)))
+  (when-let [[_ block-type params] (re-find #"(?i)^#\+begin_(\w+)(.*)" line)]
+    (when-let [env (get block-types (str/lower-case block-type))]
+      (let [trimmed (str/trim params)]
+        {:env env :title (when (seq trimmed) trimmed)}))))
 
 (defn block-end? [line]
   (some->> (re-find #"(?i)^#\+end_(\w+)" line)
@@ -161,13 +165,19 @@
 
           ;; Start of a block
           (block-start? line)
-          (do
-            (let [env (block-start? line)
-                  new-out (if (= state :list) (conj out "\\stopitemize") out)
-                  start-block (if (= env "blockquote")
-                                ["\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
-                                [(str "\\start" env)])]
-              (recur rest-lines (into new-out start-block) :block)))
+          (let [{:keys [env title]} (block-start? line)
+                new-out (if (= state :list) (conj out "\\stopitemize") out)
+                start-block (cond
+                              (= env "blockquote")
+                              ["\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
+
+                              title
+                              [(str "\\start" env "[title={" title "}]")] ; If there’s a title, inject it
+
+                              :else
+                              [(str "\\start" env)])]
+            (dbg :e env :t title) ;;;
+            (recur rest-lines (into new-out start-block) :block))
 
           (block-end? line)
           (do

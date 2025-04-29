@@ -64,52 +64,57 @@
          out []
          state :normal]
     (if (empty? lines)
-      ;; if list is open, close it at EOF
       (if (= state :list)
         (conj out "\\stopitemize")
         out)
       (let [line (first lines)
             rest-lines (rest lines)]
         (cond
-          ;; Skip comments
+          ;; Skip full-line comments
           (comment-line? line)
           (recur rest-lines out state)
 
-          ;; block start
+          ;; Start of a block
           (block-start? line)
-          (let [out (if (= state :list) (conj out "\\stopitemize") out)]
-            (recur rest-lines
-                   (conj out (str "\\start" (block-start? line)))
-                   :block))
+          (do
+            (let [env (block-start? line)
+                  new-out (if (= state :list) (conj out "\\stopitemize") out)
+                  start-block (if (= env "blockquote")
+                                ["\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
+                                [(str "\\start" env)])]
+              (recur rest-lines (into new-out start-block) :block)))
 
-          ;; block end
           (block-end? line)
-          (recur rest-lines
-                 (conj out (str "\\stop" (block-end? line)))
-                 :normal)
+          (do
+            (let [env (block-end? line)
+                  stop-block (if (= env "blockquote")
+                               ["\\stopblockquote"]
+                               [(str "\\stop" env)])]
+              (recur rest-lines (into out stop-block) :normal)))
 
-          ;; heading
+          ;; Headings
           (heading-line? line)
-          (let [out (if (= state :list) (conj out "\\stopitemize") out)]
-            (recur rest-lines
-                   (conj out (process-heading line))
-                   :normal))
+          (do
+            (let [new-out (if (= state :list)
+                            (conj out "\\stopitemize")
+                            out)]
+              (recur rest-lines (conj new-out (process-heading line)) :normal)))
 
-          ;; list item
+          ;; List items
           (list-item? line)
-          (let [out (cond
-                      (= state :list) out
-                      :else (conj out "\\startitemize"))]
-            (recur rest-lines
-                   (conj out (str "\\item " (str/trim (subs line 1))))
-                   :list))
+          (do
+            (let [new-out (if (= state :list)
+                            out
+                            (conj out "\\startitemize"))]
+              (recur rest-lines (conj new-out (str "\\item " (str/trim (subs line 1)))) :list)))
 
-          ;; normal line
+          ;; Regular paragraph or inline content
           :else
-          (let [out (if (= state :list) (conj out "\\stopitemize") out)]
-            (recur rest-lines
-                   (conj out (convert-inline line))
-                   :normal)))))))
+          (do
+            (let [new-out (if (= state :list)
+                            (conj out "\\stopitemize")
+                            out)]
+              (recur rest-lines (conj new-out (convert-inline line)) :normal))))))))
 
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))

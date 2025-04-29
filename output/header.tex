@@ -50,6 +50,7 @@
   color=indigo,
   align=middle,
   number=no,
+  page=no,
   before={\blank[2*big]},
   after={\blank[2*big]},
 ]
@@ -137,8 +138,8 @@
    corner=round,
    rulethickness=0pt,
    width=\textwidth,
-   before={\blank[medium]},
-   after={\blank[medium]},
+   before={\blank[small]},
+   after={\blank[small]},
    offset=0.5em,
    loffset=1em,
    roffset=1em,
@@ -147,7 +148,8 @@
    % now allow passing title
    beforehead={\bf\blank[small]},
    afterhead={\blank[small]},
-   style=\it, % body style (optional)
+   style={\tfx\sans\setupinterlinespace[line=2.6ex]},
+   %% style={\tfxx\color[darkgray]}, % body style (optional)
    titlestyle=\bf, % heading style
    title={}, % default empty
   ]

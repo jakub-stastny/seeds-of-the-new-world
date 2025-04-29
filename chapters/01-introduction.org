@@ -17,29 +17,9 @@ No saviour is coming. The responsibility, and the opportunity, are ours. Will yo
 
 The U.S. is burning trust faster than dollars. Massive money printing, reckless spending, and Trump’s new tariffs have only sped things up. Countries are ditching the dollar, trading in anything else they can. Meanwhile, within about 10 years, nearly all tax revenue will be eaten by debt interest and Medicare alone — leaving nothing for anything else. Faith in the system is draining fast. Without trust, the dollar dies. Without the dollar, the U.S. can't function.
 
-#+begin_tip "Can the US really default?"
+#+begin_example "Can the US really default?"
   Essentially the US is only a few years away from a situation, where every other country would default. The US though, since it prints the world's reserve currency virtually cannot default[fn::Technically, Fed and US government are separate, plus the senate has the right to block bills, so it could happen, but it's very unlikely.]. So what will happen instead, is Fed will start to print even more dollars, leading to massive inflation, investors dumping any dollar-linked investment and essentially tanking the dollar system and the US economy with it.
-#+end_tip
-
-#+begin_note
-note
-#+end_note
-
-#+begin_example
-example
 #+end_example
-
-#+begin_verbatim
-verbatim
-#+end_verbatim
-
-#+begin_verse
-verse
-#+end_verse
-
-#+begin_center
-center
-#+end_center
 
 Fixing it means touching the untouchable. Raise taxes? Political suicide. Cut Medicare or Social Security? Same. Slash military spending? Not a chance. Meanwhile, stunts like Musk pushing DOGE are pure smokescreen — they fix nothing, but make it look like something's happening. The real problems are locked in and nobody dares touch them. The ship is at full speed, the iceberg is dead ahead, and the wheel is stuck. Everyone is busy arguing, but the crash is already certain.
 

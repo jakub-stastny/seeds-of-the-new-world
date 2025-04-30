@@ -209,7 +209,6 @@
          out []
          state :normal
          active-env nil]
-    (dbg :active-env active-env)
     (if (empty? lines)
       (if (= state :list)
         (conj out "\\stopitemize")

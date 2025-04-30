@@ -1,6 +1,15 @@
-* Introduction
 @@comment: It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes.@@.
 
+** Preamble
+On Christmas Day of 2019, my long-time good friend Patricia entered a spontaneous trance and spoke as if guided by a deeper intelligence. Though she retained only the feeling, the message was clear: a global collapse is approaching. It won’t be instant or explosive, but will unfold like falling dominoes—triggered by the failure of the financial system. The collapse will strip away illusions: of stability, of wealth, of control. Many will suffer, and many will die—not as punishment, but as a necessary rebalancing. What follows is not the end, but the beginning of a simpler life rooted in essentials: food, shelter, love, and care. Those who align with what truly matters will find themselves prepared—not through stockpiles, but through inner clarity and communal strength.
+
+I've known Patricia for over a decade and she's a very capable psychic. Many people, including me, knew all along that things cannot go on like this for much longer, and specifically anti-globalisation protests in late 90s vocalised this sentiment of many, until they were silenced by post-9/11 crack downs. But later came the occupy movement, more and more knowledge of how exploitative global system works amongst normal people. After the pandemic astrologers and mediums were talking about the imminent collapse and as of early 2025, it's a thing that even popular actresses in MX talk about and people in our local yoga class. The cat is out of the bag.
+
+The fact that the collapse is talked about by normal people means that it is no longer the future: it's the present. It has been ramping up gradually and now we're entering the free fall stage when things will disintegrate in a few short years.
+
+This book however, is not alarmistic: I explain what is going on and why, so people understand what is it that went wrong and why the old system must fail and why is that a good thing. Once we get that out of the way, I want to get into what to replace it with. Welcome to the New World.
+
+* Introduction
 The collapse of our global systems was never a question of /if/ — only /when/. Built on endless growth in a finite world, they were designed to fail. Debt spirals, ecological exhaustion, social disintegration: the cracks are now impossible to hide.
 
 We live in a world where millions are chronically lonely despite being hyper-connected, where rainforests are traded for short-term profit, where economic "growth" often measures destruction more than creation. These are not glitches; they are features of a system that has reached the end of its cycle.
@@ -20,7 +29,16 @@ No saviour is coming. The responsibility, and the opportunity, are ours. Will yo
 The US is burning trust faster than dollars. Massive money printing, reckless spending, and Trump's new tariffs have only sped things up. Countries are ditching the dollar, trading in anything else they can. Meanwhile, within about 10 years, nearly all tax revenue will be eaten by debt interest and Medicare alone — leaving nothing for anything else. Faith in the system is draining fast. Without trust, the dollar dies. Without the dollar, the US can't function.
 
 #+begin_example "What is inflation?" :type term
-test
+Inflation means that prices go up over time, so the money you have buys less than it did before. It usually happens when there’s too much money chasing too few goods, or when it costs more to make and deliver things. Some inflation is normal in a growing economy, but too much can hurt people—especially those with fixed incomes or savings, since their money loses value.
+
+*Who controls inflation?* Inflation isn’t set like a number on a dial. It comes from many things in the economy, but central banks try to influence it. They do this by raising or lowering interest rates, or by changing how much money flows through the system. Governments also affect inflation by how they spend and borrow.
+#+end_example
+#+begin_example "What is inflation?" :type term
+Inflation means that prices go up over time, so the money you have buys less than it did before. It usually happens when there’s too much money chasing too few goods, or when it costs more to make and deliver things. Some inflation is normal in a growing economy, but too much can hurt people—especially those with fixed incomes or savings, since their money loses value.
+
+*Who controls inflation?* Inflation isn’t set like a number on a dial. It comes from many things in the economy, but central banks try to influence it. They do this by raising or lowering interest rates, or by changing how much money flows through the system. Governments also affect inflation by how they spend and borrow.
+
+*How is inflation calculated?* Inflation is usually measured by checking the prices of a group of everyday goods and services—called a “basket”—and comparing them over time. This gives a percentage that shows how much prices have risen. But the way inflation is measured is often changed to make it look lower than it really is. The items in the basket can be swapped out for cheaper ones, or adjusted to say they’ve improved in quality (even if they cost more). These tricks make the official numbers look better, but they don’t reflect the real cost of living for most people.
 #+end_example
 
 #+begin_example "Can the US really default on their debt?"

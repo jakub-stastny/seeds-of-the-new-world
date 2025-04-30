@@ -24,27 +24,51 @@
    5 "subsubsection"})
 
 (defn comment-line? [line]
-  (boolean (re-find #"^\s*#(?!\s*\\)" line)))
+  (boolean (re-find #"^\s*#(?!\s+\\) " line)))
 
 (defn list-item? [line]
   (re-matches #"^\s*-\s+.+$" line))
 
+(defn parse-org-block-args [arg-str]
+  (let [arg-str (str/trim arg-str)
+        [positional rest]
+        (if (str/starts-with? arg-str "\"")
+          (let [[_ quoted remaining] (re-matches #"^\"([^\"]*)\"\s*(.*)" arg-str)]
+            [quoted remaining])
+          (let [[first-word & more] (str/split arg-str #"\s+" 2)]
+            [first-word (or (first more) "")]))
+        tokens (str/split (str/trim rest) #"\s+")
+        opts (->> (partition 2 tokens)
+                  (map (fn [[k v]]
+                         [(keyword (subs k 1))
+                          (case v
+                            "yes" true
+                            "no" false
+                            v)]))
+                  (into {}))]
+    [(when (seq positional) positional), opts]))
+
 (defn block-start? [line]
-  (when-let [[_ block-type params] (re-find #"(?i)^#\+begin_(\w+)(.*)" line)]
-    (when-let [env (get block-types (str/lower-case block-type))]
-      (let [trimmed (str/trim params)]
-        (cond
-          ;; case: quoted title → extract contents
-          (re-matches #"^\"(.+)\"$" trimmed)
-          {:env env :title (second (re-matches #"^\"(.+)\"$" trimmed))}
+  (when-let [[_ block-type params] (re-find #"(?i)^#\+begin_(\w+)\s*(.*)" line)]
+    (do
+      (dbg :x block-type params)
+      (let [result (parse-org-block-args params)]
+        (dbg :r result)
+        (when-let [env (get block-types (str/lower-case block-type))]
+          (let [trimmed (str/trim params)]
+            (dbg :t trimmed) ;;;;
+            (cond
+              ;; case: quoted title → extract contents
+              (re-matches #"^\"(.+)\"$" trimmed)
+              {:env env :title (second (re-matches #"^\"(.+)\"$" trimmed))}
 
-          ;; case: non-empty unquoted stuff → treat as args
-          (seq trimmed)
-          {:env env :args trimmed}
+              ;; case: non-empty unquoted stuff → treat as args
+              (seq trimmed)
+              {:env env :args trimmed}
 
-          ;; otherwise
-          :else
-          {:env env})))))
+              ;; otherwise
+              :else
+              {:env env})))))))
 
 (defn block-end? [line]
   (some->> (re-find #"(?i)^#\+end_(\w+)" line)
@@ -175,7 +199,9 @@
         (cond
           ;; Skip full-line comments
           (comment-line? line)
-          (recur rest-lines out state)
+          (do
+            (dbg :# line)
+            (recur rest-lines out state))
 
           ;; Start of a block
           (block-start? line)

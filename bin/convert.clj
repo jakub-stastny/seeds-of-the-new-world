@@ -10,7 +10,7 @@
 
 (defn collect-footnotes-and-strip [lines]
   (reduce (fn [{:keys [lines footnotes]} line]
-            (if-let [[_ key txt] (re-matches #"\[fn:([^\]]+)\]\s+(.*)" line)]
+            (if-let [[_ key txt] (re-matches #".*\[fn:([^\]]+)\]\s+(.*)" line)]
               {:lines lines
                :footnotes (assoc footnotes key txt)}
               {:lines (conj lines line)

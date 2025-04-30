@@ -19,6 +19,10 @@ No saviour is coming. The responsibility, and the opportunity, are ours. Will yo
 
 The US is burning trust faster than dollars. Massive money printing, reckless spending, and Trump's new tariffs have only sped things up. Countries are ditching the dollar, trading in anything else they can. Meanwhile, within about 10 years, nearly all tax revenue will be eaten by debt interest and Medicare alone — leaving nothing for anything else. Faith in the system is draining fast. Without trust, the dollar dies. Without the dollar, the US can't function.
 
+#+begin_example "What is inflation?" :type term
+test
+#+end_example
+
 #+begin_example "Can the US really default on their debt?"
   Not in the usual way. Most countries eventually go broke — they can't pay their debts. The US is different: it prints the world's reserve currency, so it can always hit "print" and pay[fn:1]. But here's the catch: printing money doesn't make the problem go away — it just shifts it. The more they print, the less that money is worth[fn:2]. At some point, people stop trusting the dollar[fn:3]. Then they dump it. And when trust dies, the dollar dies — and with it, the US economy as we know it[fn:ref:1].
 #+end_example

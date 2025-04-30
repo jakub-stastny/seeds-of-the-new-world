@@ -129,12 +129,20 @@
    color=mysectionblue,  % Link color
    style=normal] % No underline, no bold
 
-\definecolor[TipBackground][r=0.90,g=1.00,b=0.90] % very light green
+\definecolor[GreenBackground][r=0.90,g=1.00,b=0.90]  % soft green
+\definecolor[YellowBackground][r=1.00,g=1.00,b=0.85] % soft creamy yellow
+\definecolor[BlueBackground][r=0.90,g=0.95,b=1.00]   % soft sky blue
+\definecolor[RedBackground][r=1.00,g=0.90,b=0.90]    % soft pinkish red
+
+\definecolor[GreenTitleColour][r=0.10,g=0.50,b=0.10]  % earthy green
+\definecolor[YellowTitleColour][r=0.60,g=0.50,b=0.00] % golden brown
+\definecolor[BlueTitleColour][r=0.00,g=0.30,b=0.60]   % navy blue
+\definecolor[RedTitleColour][r=0.60,g=0.10,b=0.10]    % deep red
 
 \defineframedtext
   [tip]
   [background=color,
-   backgroundcolor=TipBackground,
+   backgroundcolor=GreenBackground,
    frame=off,
    corner=round,
    rulethickness=0pt,
@@ -155,10 +163,37 @@
    title={}, % default empty
   ]
 
-\definecolor[TipTitleColor][r=0.1, g=0.4, b=0.1] % dark green, tweak as you like
+\defineframedtext
+  [definition]
+  [background=color,
+   backgroundcolor=YellowBackground,
+   frame=off,
+   corner=round,
+   rulethickness=0pt,
+   width=\textwidth,
+   before={\blank[small]},
+   after={\blank[small]},
+   offset=0.5em,
+   loffset=1em,
+   roffset=1em,
+   boffset=1em,
+   toffset=1em,
+   % now allow passing title
+   beforehead={\bf\blank[small]},
+   afterhead={\blank[small]},
+   style={\tfx\sans\setupinterlinespace[line=2.6ex]},
+   %% style={\tfxx\color[darkgray]}, % body style (optional)
+   titlestyle=\bf, % heading style
+   title={}, % default empty
+  ]
 
 \def\tiptitle#1{%
-  {\bf\color[TipTitleColor]{#1}}\par
+  {\bf\color[GreenTitleColour]{#1}}\par
+  \blank[small]%
+}
+
+\def\definitiontitle#1{%
+  {\bf\color[YellowTitleColour]{#1}}\par
   \blank[small]%
 }
 

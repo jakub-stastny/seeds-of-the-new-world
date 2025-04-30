@@ -38,9 +38,16 @@
   {"disclaimer" "disclaimer"
    "warning" "warning"
    "quote" "blockquote"
-   "note" "note"
-   ;; If we use a custom block, GH won't show it.
-   "example" "tip"})
+   "note" "note"})
+
+(defn match-block-type [type args]
+  (or (get block-types type)
+      (and (= type "example")
+           (cond
+             (not (contains? args :type)) "tip"
+             (= (:type args) "term") "definition"
+
+             true (throw (ex-info "Unknown block type" {:type type :args args}))))))
 
 (def heading-levels
   {1 "part"
@@ -76,29 +83,13 @@
     [(when (seq positional) positional), opts]))
 
 (defn block-start? [line]
-  (when-let [[_ block-type params] (re-find #"(?i)^#\+begin_(\w+)\s*(.*)" line)]
-    (do
-      (let [result (parse-org-block-args params)]
-        (when-let [env (get block-types (str/lower-case block-type))]
-          (let [trimmed (str/trim params)]
-            (cond
-              ;; case: quoted title → extract contents
-              (re-matches #"^\"(.+)\"$" trimmed)
-              {:env env :title (second (re-matches #"^\"(.+)\"$" trimmed))}
-
-              ;; case: non-empty unquoted stuff → treat as args
-              (seq trimmed)
-              {:env env :args trimmed}
-
-              ;; otherwise
-              :else
-              {:env env})))))))
+  (when-let [[_ block-type raw-args] (re-find #"(?i)^#\+begin_(\w+)\s*(.*)" line)]
+    (let [[title args] (parse-org-block-args raw-args)]
+      (when-let [env (match-block-type (str/lower-case block-type) args)]
+        {:env env :title title :args args}))))
 
 (defn block-end? [line]
-  (some->> (re-find #"(?i)^#\+end_(\w+)" line)
-           (second)
-           (str/lower-case)
-           (get block-types)))
+  (boolean (re-find #"(?i)^#\+end_(\w+)" line)))
 
 (defn heading-line? [line]
   (re-matches #"^\*+ .+" line))
@@ -216,7 +207,9 @@
 (defn process-lines [lines & {:keys [footnotes]}]
   (loop [lines lines
          out []
-         state :normal]
+         state :normal
+         active-env nil]
+    (dbg :active-env active-env)
     (if (empty? lines)
       (if (= state :list)
         (conj out "\\stopitemize")
@@ -226,31 +219,28 @@
         (cond
           ;; Skip full-line comments
           (comment-line? line)
-          (do
-            (recur rest-lines out state))
+          (recur rest-lines out state active-env)
 
           ;; Start of a block
           (block-start? line)
-          (let [{:keys [env title]} (block-start? line)
+          (let [{:keys [env title args]} (block-start? line)
                 new-out (if (= state :list) (conj out "\\stopitemize") out)
                 start-block (cond
                               (= env "blockquote")
                               ["\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
 
                               title
-                              [(str "\\start" env) "\\tiptitle{" title "}"]
+                              [(str "\\start" env) (str "\\" env "title{" title "}")]
 
                               :else
                               [(str "\\start" env)])]
-            (recur rest-lines (into new-out start-block) :block))
+            (recur rest-lines (into new-out start-block) :block env))
 
           (block-end? line)
-          (do
-            (let [env (block-end? line)
-                  stop-block (if (= env "blockquote")
-                               ["\\stopblockquote"]
-                               [(str "\\stop" env)])]
-              (recur rest-lines (into out stop-block) :normal)))
+          (let [stop-block (if (= active-env "blockquote")
+                             ["\\stopblockquote"]
+                             [(str "\\stop" active-env)])]
+            (recur rest-lines (into out stop-block) :normal nil))
 
           ;; Headings
           (heading-line? line)
@@ -258,7 +248,7 @@
             (let [new-out (if (= state :list)
                             (conj out "\\stopitemize")
                             out)]
-              (recur rest-lines (conj new-out (process-heading line)) :normal)))
+              (recur rest-lines (conj new-out (process-heading line)) :normal nil)))
 
           ;; List items
           (list-item? line)
@@ -266,7 +256,7 @@
             (let [new-out (if (= state :list)
                             out
                             (conj out "\\startitemize"))]
-              (recur rest-lines (conj new-out (str "\\item " (str/trim (subs line 1)))) :list)))
+              (recur rest-lines (conj new-out (str "\\item " (str/trim (subs line 1)))) :list nil)))
 
           ;; Regular paragraph or inline content
           :else
@@ -274,7 +264,8 @@
             (let [new-out (if (= state :list)
                             (conj out "\\stopitemize")
                             out)]
-              (recur rest-lines (conj new-out (convert-inline footnotes line)) :normal))))))))
+              ;; For :list, should reset env to nil.
+              (recur rest-lines (conj new-out (convert-inline footnotes line)) :normal active-env))))))))
 
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))

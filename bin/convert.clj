@@ -213,7 +213,7 @@
       (str/replace #"\[\[.*?\]\[.*?\]\]|\[\[.*?\]\]"
                    (fn [m] (process-org-link m)))))
 
-(defn process-lines [footnotes lines]
+(defn process-lines [lines & {:keys [release footnotes]}]
   (loop [lines lines
          out []
          state :normal]
@@ -238,7 +238,6 @@
                               ["\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
 
                               title
-                              ;; [(str "\\start" env "[title={" title "}]")] ; If there’s a title, inject it
                               [(str "\\start" env) "\\tiptitle{" title "}"]
 
                               :else
@@ -280,15 +279,18 @@
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))
 
-(defn -main []
+;; --release=2025-04-30
+(defn -main [& args]
   (let [chapters-dir "chapters"
+        release-arg (first (filter #(re-find #"^--release" %) args))
+        release (when release-arg (second (str/split release-arg #"=")))
         input (read-all-chapters chapters-dir)
         lines (str/split-lines input)
         {:keys [lines footnotes]} (collect-footnotes-and-strip lines)
-        processed (process-lines footnotes lines)
+        processed (process-lines lines :footnotes footnotes :release release)
         output (str/join "\n" processed)]
     (println output)))
 
 ;; Allow running as script
 (when (= *file* (System/getProperty "babashka.file"))
-  (-main))
+  (apply -main *command-line-args*))

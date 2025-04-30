@@ -5,7 +5,7 @@ We live in a world where millions are chronically lonely despite being hyper-con
 
 This document draws on the study of failed empires, historical patterns like the Fourth Turning, and deeper energetic frameworks that most analyses ignore. Collapse is not random. It follows predictable arcs — both material and spiritual.
 
-The goal here is not to mourn what’s dying, but to understand why it’s happening, what forces are shaping the transition, and how we can move wisely through it. The future will not be built by the institutions that caused the collapse. It will be built by individuals who see clearly and act with grounded courage.
+The goal here is not to mourn what's dying, but to understand why it's happening, what forces are shaping the transition, and how we can move wisely through it. The future will not be built by the institutions that caused the collapse. It will be built by individuals who see clearly and act with grounded courage.
 
 No saviour is coming. The responsibility, and the opportunity, are ours. Will you take it?
 
@@ -15,23 +15,23 @@ No saviour is coming. The responsibility, and the opportunity, are ours. Will yo
 
 *** Financial system breakdown
 
-The U.S. is burning trust faster than dollars. Massive money printing, reckless spending, and Trump’s new tariffs have only sped things up. Countries are ditching the dollar, trading in anything else they can. Meanwhile, within about 10 years, nearly all tax revenue will be eaten by debt interest and Medicare alone — leaving nothing for anything else. Faith in the system is draining fast. Without trust, the dollar dies. Without the dollar, the U.S. can't function.
+The US is burning trust faster than dollars. Massive money printing, reckless spending, and Trump's new tariffs have only sped things up. Countries are ditching the dollar, trading in anything else they can. Meanwhile, within about 10 years, nearly all tax revenue will be eaten by debt interest and Medicare alone — leaving nothing for anything else. Faith in the system is draining fast. Without trust, the dollar dies. Without the dollar, the US can't function.
 
 #+begin_example "Can the US really default?"
-  Not in the usual way. Most countries eventually go broke — they can't pay their debts. The US is different: it prints the world’s reserve currency, so it can always hit "print" and pay[fn:1]. But here’s the catch: printing money doesn’t make the problem go away — it just shifts it. The more they print, the less that money is worth[fn:2]. At some point, people stop trusting the dollar[fn:3]. Then they dump it. And when trust dies, the dollar dies — and with it, the US economy as we know it.
+  Not in the usual way. Most countries eventually go broke — they can't pay their debts. The US is different: it prints the world's reserve currency, so it can always hit "print" and pay[fn:1]. But here's the catch: printing money doesn't make the problem go away — it just shifts it. The more they print, the less that money is worth[fn:2]. At some point, people stop trusting the dollar[fn:3]. Then they dump it. And when trust dies, the dollar dies — and with it, the US economy as we know it.
 #+end_example
 
   [fn:1] The US Treasury borrows money, but the Federal Reserve — technically independent — can create dollars to buy that debt if markets stop doing so.
-  [fn:2] This is not a default in name, but it is in effect: if you’re paid back in money that buys much less, you’ve still lost.
+  [fn:2] This is not a default in name, but it is in effect: if you're paid back in money that buys much less, you've still lost.
   [fn:3] Once global trust in the dollar breaks, trade contracts, foreign reserves, and energy deals start shifting elsewhere — which has already begun.
 
 Fixing it means touching the untouchable. Raise taxes? Political suicide. Cut Medicare or Social Security? Same. Slash military spending? Not a chance. Meanwhile, stunts like Musk pushing DOGE are pure smokescreen — they fix nothing, but make it look like something's happening. The real problems are locked in and nobody dares touch them. The ship is at full speed, the iceberg is dead ahead, and the wheel is stuck. Everyone is busy arguing, but the crash is already certain.
 
-And if you think this doesn’t matter because you’re not in the U.S., think again. In a globalised world, everything is linked — finance, trade, supply chains. It’s not like the old days when one country could sink without dragging others down. Today it’s all one pond. When the dollar goes, the shockwaves hit everyone.
+And if you think this doesn't matter because you're not in the US, think again. In a globalised world, everything is linked — finance, trade, supply chains. It's not like the old days when one country could sink without dragging others down. Today it's all one pond. When the dollar goes, the shockwaves hit everyone.
 
 *** End of cheap oil
 
-The modern world runs on oil — and the cheap stuff is gone. What’s left is buried deep, dirtier, harder to reach, and costs far more to pull out. Shale oil kept the illusion alive for a while, but it’s already cracking. When oil prices jump, everything jumps: food, transport, medicine, heating, industry. Without cheap oil, cities choke, supply chains break, farming collapses. Feeding places like New York or Mexico City stops being logistics — it becomes survival. Solar panels and electric cars won’t fix it. They run on supply chains too, and those chains are already snapping.
+The modern world runs on oil — and the cheap stuff is gone. What's left is buried deep, dirtier, harder to reach, and costs far more to pull out. Shale oil kept the illusion alive for a while, but it's already cracking. When oil prices jump, everything jumps: food, transport, medicine, heating, industry. Without cheap oil, cities choke, supply chains break, farming collapses. Feeding places like New York or Mexico City stops being logistics — it becomes survival. Solar panels and electric cars won't fix it. They run on supply chains too, and those chains are already snapping.
 
 *** Water scarcity
 
@@ -41,25 +41,25 @@ Cape Town faced a similar threat. In 2018, after years of drought and overuse, t
 
 *** Soil degradation
 
-Civilisations don’t just fall to war — they fall when their land dies. The world’s richest soils took thousands of years to form, but we’re losing them 10 to 50 times faster than nature can replace them. Farming chemicals, monocultures, and over-tilling strip the earth bare until nothing will grow. The American Midwest, once the planet’s breadbasket, is bleeding out. It’s not just dust storms — it's the slow death of the land itself. When topsoil goes, crops fail even if it rains. You can’t eat promises, you can’t plant machines. Rome rotted its fields before it rotted its empire. We're doing it again — only bigger, and this time there’s nowhere left to move.
+Civilisations don't just fall to war — they fall when their land dies. The world's richest soils took thousands of years to form, but we're losing them 10 to 50 times faster than nature can replace them. Farming chemicals, monocultures, and over-tilling strip the earth bare until nothing will grow. The American Midwest, once the planet's breadbasket, is bleeding out. It's not just dust storms — it's the slow death of the land itself. When topsoil goes, crops fail even if it rains. You can't eat promises, you can't plant machines. Rome rotted its fields before it rotted its empire. We're doing it again — only bigger, and this time there's nowhere left to move.
 
 *** Extreme weather
 
-Once, floods, fires, and storms were rare disasters. Now they’re just background noise. Australia, baked by record heat, swings straight into massive floods, drowning entire neighbourhoods. In Queensland, so many homes are now at risk that insurance is starting to vanish — and without insurance, communities collapse after every hit.
+Once, floods, fires, and storms were rare disasters. Now they're just background noise. Australia, baked by record heat, swings straight into massive floods, drowning entire neighbourhoods. In Queensland, so many homes are now at risk that insurance is starting to vanish — and without insurance, communities collapse after every hit.
 
-Europe used to fear droughts once a generation. Now southern Europe burns every summer, while storms flood cities in the north. Even North Africa, famous for deserts, saw snow falling in Morocco — a climate system wobbling where it shouldn’t.
+Europe used to fear droughts once a generation. Now southern Europe burns every summer, while storms flood cities in the north. Even North Africa, famous for deserts, saw snow falling in Morocco — a climate system wobbling where it shouldn't.
 
-Canada is burning, flooding, and freezing all in the same year. Wildfires gut towns. Hailstorms wreck crops. Rivers spill over into cities that once thought they were safe. And the U.S. is hammered on every front — hurricanes, megafires, endless storms. The cycle is speeding up, and every system we rely on — farming, transport, power grids — is getting hit harder, faster, and more often.
+Canada is burning, flooding, and freezing all in the same year. Wildfires gut towns. Hailstorms wreck crops. Rivers spill over into cities that once thought they were safe. And the US is hammered on every front — hurricanes, megafires, endless storms. The cycle is speeding up, and every system we rely on — farming, transport, power grids — is getting hit harder, faster, and more often.
 
-This isn’t about bad luck anymore. It’s the new normal, and it’s only just begun.
+This isn't about bad luck anymore. It's the new normal, and it's only just begun.
 
-These were just a few of the biggest cracks. There’s more — and it’s spreading. Ageing infrastructure built for a stable climate is failing under floods, fires, and storms — roads, bridges, power grids, all crumbling faster than we can repair them. Global fertility rates are crashing, leading to ageing, shrinking, and unstable societies. Oceans, stripped by overfishing and poisoned by runoff, are losing their ability to feed us or buffer the climate. Mass migration is building like a pressure wave as regions become unlivable. I’ll break these down in the second part of this brochure.
+These were just a few of the biggest cracks. There's more — and it's spreading. Ageing infrastructure built for a stable climate is failing under floods, fires, and storms — roads, bridges, power grids, all crumbling faster than we can repair them. Global fertility rates are crashing, leading to ageing, shrinking, and unstable societies. Oceans, stripped by overfishing and poisoned by runoff, are losing their ability to feed us or buffer the climate. Mass migration is building like a pressure wave as regions become unlivable. I'll break these down in the second part of this brochure.
 
 ** The age of self-destruction
 
-You don’t need data to feel it. Everyone knows something is deeply wrong. Greed isn’t a glitch — it is the system. Lies aren’t scandals — they’re the norm. The "not my problem" mindset runs deep, from government halls to ordinary homes. Social media turns deceit into currency. Governments and corporations openly loot the future while most people look away, numbed or distracted.
+You don't need data to feel it. Everyone knows something is deeply wrong. Greed isn't a glitch — it is the system. Lies aren't scandals — they're the norm. The "not my problem" mindset runs deep, from government halls to ordinary homes. Social media turns deceit into currency. Governments and corporations openly loot the future while most people look away, numbed or distracted.
 
-Civilisations don’t collapse from outside blows — they rot inside first. When truth is worthless, when honour is mocked, when life is just a game of what you can take before someone else does, collapse isn’t a question. It’s automatic.
+Civilisations don't collapse from outside blows — they rot inside first. When truth is worthless, when honour is mocked, when life is just a game of what you can take before someone else does, collapse isn't a question. It's automatic.
 
 Our mindset shapes our systems. If we seek profit at the expense of others and the Earth, we design economies and structures that do exactly that — and carry their own destruction inside them. Spiritual traditions saw this long ago: the world outside reflects the world within. As above, so below. When inner rot becomes normal, outer collapse becomes inevitable.
 
@@ -69,21 +69,21 @@ Our mindset shapes our systems. If we seek profit at the expense of others and t
 
 ** Lost eden: separation and its consequences
 
-In the beginning, Oneness wasn’t an idea — it was how humans lived. Life wasn’t chopped into categories: self, world, animal, spirit. There was just life, unfolding. Drinking from a river, resting under a tree, living with the seasons — it was all one movement, one being.
+In the beginning, Oneness wasn't an idea — it was how humans lived. Life wasn't chopped into categories: self, world, animal, spirit. There was just life, unfolding. Drinking from a river, resting under a tree, living with the seasons — it was all one movement, one being.
 
-This isn’t philosophy. Across time, people who stepped beyond the mind — mystics, sages, deep meditators, even those under LSD or other psychedelics — describe the same thing: a direct experience of undivided life. Different cultures gave it different names — Brahman, Great Spirit, Christ Consciousness — but they all point to the same reality: when the walls of thought fall, only unity remains.
+This isn't philosophy. Across time, people who stepped beyond the mind — mystics, sages, deep meditators, even those under LSD or other psychedelics — describe the same thing: a direct experience of undivided life. Different cultures gave it different names — Brahman, Great Spirit, Christ Consciousness — but they all point to the same reality: when the walls of thought fall, only unity remains.
 
-Separation was not evil. It was part of life’s unfolding. Individuality, self-awareness, choice — all of these needed some degree of division. Life was not meant to stay in unconscious unity forever. But the problem came when separation forgot its roots. When humans began to see themselves as apart, above, or against the rest of life, the wound opened.
+Separation was not evil. It was part of life's unfolding. Individuality, self-awareness, choice — all of these needed some degree of division. Life was not meant to stay in unconscious unity forever. But the problem came when separation forgot its roots. When humans began to see themselves as apart, above, or against the rest of life, the wound opened.
 
-The true fall wasn’t gaining knowledge. It was losing memory. Forgetting that we are branches of the same tree, not owners of it. From that forgetting grew fear, control, greed — and the systems we see collapsing today.
+The true fall wasn't gaining knowledge. It was losing memory. Forgetting that we are branches of the same tree, not owners of it. From that forgetting grew fear, control, greed — and the systems we see collapsing today.
 
-Returning doesn’t mean erasing the self or going back to unconscious innocence. It means standing fully in individuality, fully in choice — but knowing, living, breathing the truth that all life is still one field.
+Returning doesn't mean erasing the self or going back to unconscious innocence. It means standing fully in individuality, fully in choice — but knowing, living, breathing the truth that all life is still one field.
 
-The way forward isn’t building a new utopia. It’s remembering what we already are, and building from there.
+The way forward isn't building a new utopia. It's remembering what we already are, and building from there.
 
 ** The path forward: conscious return to oneness
 
-Life, when thrown out of balance, seeks to heal itself. A river that overflows does not forget how to flow; it finds a deeper channel. Likewise, humanity’s excesses force a correction.
+Life, when thrown out of balance, seeks to heal itself. A river that overflows does not forget how to flow; it finds a deeper channel. Likewise, humanity's excesses force a correction.
 
 True restoration is not regression into unconscious innocence, but a conscious reunion with life. It is the growth of a strong tree rooted in both earth and sky.
 

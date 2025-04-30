@@ -1,4 +1,6 @@
 * An economy built to exploit
+@@comment: It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes.@@.
+
 This chapter is very technical and not everyone may feel like reading it, or have the time for that matter. All you really need to know is that /the global system was built to extract, exploit, and hollow out life — and it is now collapsing under the weight of its own lies/.
 
 ** How the system works

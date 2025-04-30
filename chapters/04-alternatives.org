@@ -1,2 +1,4 @@
 * Emerging alternatives
+@@comment: It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes.@@.
+
 # BRICS+ etc, initiatives already in progress. These will be TEMPORARY and transitionary (make that clear), not full Phoenix yet.

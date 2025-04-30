@@ -1,4 +1,6 @@
 * Models of collapse
+@@comment: It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes.@@.
+
 ** Dying imperium: lessons from history
 
 Collapse never comes from nowhere. It builds quietly, invisibly, until the moment it can no longer be denied. Civilisations that once seemed invincible disintegrate not from a single blow, but from a thousand small fractures ignored by the proud and the powerful.

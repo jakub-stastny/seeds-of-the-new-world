@@ -50,7 +50,8 @@
    5 "subsubsection"})
 
 (defn comment-line? [line]
-  (boolean (re-find #"^\s*#(?!\s+\\) " line)))
+  (boolean (or (re-find #"^\s*#(?!\s+\\) " line)
+               (re-find #"@@comment:" line))))
 
 (defn list-item? [line]
   (re-matches #"^\s*-\s+.+$" line))

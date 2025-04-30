@@ -51,12 +51,9 @@
 (defn block-start? [line]
   (when-let [[_ block-type params] (re-find #"(?i)^#\+begin_(\w+)\s*(.*)" line)]
     (do
-      (dbg :x block-type params)
       (let [result (parse-org-block-args params)]
-        (dbg :r result)
         (when-let [env (get block-types (str/lower-case block-type))]
           (let [trimmed (str/trim params)]
-            (dbg :t trimmed) ;;;;
             (cond
               ;; case: quoted title → extract contents
               (re-matches #"^\"(.+)\"$" trimmed)
@@ -200,7 +197,6 @@
           ;; Skip full-line comments
           (comment-line? line)
           (do
-            (dbg :# line)
             (recur rest-lines out state))
 
           ;; Start of a block

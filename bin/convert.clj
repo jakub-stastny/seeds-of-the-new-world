@@ -8,6 +8,26 @@
 (defn dbg [& args]
   (binding [*out* *err*] (apply prn args)))
 
+(defn collect-footnotes-and-strip [lines]
+  (reduce (fn [{:keys [lines footnotes]} line]
+            (if-let [[_ key txt] (re-matches #"\[fn:([^\]]+)\]\s+(.*)" line)]
+              {:lines lines
+               :footnotes (assoc footnotes key txt)}
+              {:lines (conj lines line)
+               :footnotes footnotes}))
+          {:lines [] :footnotes {}}
+          lines))
+
+(defn replace-footnotes [line footnotes]
+  (-> line
+      ;; inline: [fn::text]
+      (str/replace #"\[fn::(.*?)\]"
+                   (fn [[_ txt]] (str "\\footnote{" txt "}")))
+      ;; named: [fn:1]
+      (str/replace #"\[fn:([^\]]+)\]"
+                   (fn [[_ key]]
+                     (str "\\footnote{" (get footnotes key (str "??" key)) "}")))))
+
 (def block-types
   {"disclaimer" "disclaimer"
    "warning" "warning"
@@ -164,12 +184,12 @@
 
     :else link))
 
-(defn convert-inline [line]
+(defn convert-inline [footnotes line]
   (-> line
       ;; TeX comments (# \page).
       (str/replace #"^\s*#\s+" "")
-      ;; Footnotes
-      (str/replace #"\[fn::([^\]]+)\]" "\\\\footnote{$1}")
+      ;; ;; Footnotes
+      (replace-footnotes footnotes)
       ;; Quotes
       (str/replace #"“([^”]+)”" "\\\\quotation{$1}")
       (str/replace #"\"([^\"]+)\"" "\\\\quotation{$1}")
@@ -183,7 +203,7 @@
       (str/replace #"\[\[.*?\]\[.*?\]\]|\[\[.*?\]\]"
                    (fn [m] (process-org-link m)))))
 
-(defn process-lines [lines]
+(defn process-lines [footnotes lines]
   (loop [lines lines
          out []
          state :normal]
@@ -245,7 +265,7 @@
             (let [new-out (if (= state :list)
                             (conj out "\\stopitemize")
                             out)]
-              (recur rest-lines (conj new-out (convert-inline line)) :normal))))))))
+              (recur rest-lines (conj new-out (convert-inline footnotes line)) :normal))))))))
 
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))
@@ -254,7 +274,8 @@
   (let [chapters-dir "chapters"
         input (read-all-chapters chapters-dir)
         lines (str/split-lines input)
-        processed (process-lines lines)
+        {:keys [lines footnotes]} (collect-footnotes-and-strip lines)
+        processed (process-lines footnotes lines)
         output (str/join "\n" processed)]
     (println output)))
 

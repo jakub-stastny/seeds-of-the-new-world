@@ -3,5 +3,7 @@
 
 [[https://github.com/jakub-stastny/seeds-of-the-new-world]]
 
+\goto{jakub.stastny.pt+seeds@gmail.com}[url(mailto:jakub.stastny.pt+seeds@gmail.com)]
+
 ** References
 # \AllReferences

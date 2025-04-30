@@ -1,12 +1,5 @@
 * Introduction
-#+begin_comment
-begin comment
-#+end_comment
-
-This will be visible @@comment:but this part won't@@.
-
-* COMMENT This section will not be exported
-Some text here that’s also ignored.
+@@comment: It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes.@@.
 
 The collapse of our global systems was never a question of /if/ — only /when/. Built on endless growth in a finite world, they were designed to fail. Debt spirals, ecological exhaustion, social disintegration: the cracks are now impossible to hide.
 

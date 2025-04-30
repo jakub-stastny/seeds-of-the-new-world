@@ -112,13 +112,16 @@
   (let [words (str/split s #"\s+")
         count-words (count words)]
     (->> words
-         (map-indexed (fn [i word]
-                        (cond
-                          (not (lowercase-or-titlecase? word)) word ; leave weird or ALL-CAPS untouched
-                          (or (= i 0) (= i (dec count-words)) (not (stopwords (str/lower-case word))))
-                          (str/capitalize (str/lower-case word))
-                          :else
-                          (str/lower-case word))))
+         (map-indexed
+          (fn [i word]
+            (if (not (lowercase-or-titlecase? word))
+              word
+              (let [parts (str/split word #"-")
+                    cap (fn [p] (if (or (= i 0) (= i (dec count-words)) (not (stopwords (str/lower-case p))))
+                                  (str/capitalize (str/lower-case p))
+                                  (str/lower-case p)))
+                    word' (str/join "-" (map cap parts))]
+                word'))))
          (str/join " "))))
 
 ;; Moc roztahany.

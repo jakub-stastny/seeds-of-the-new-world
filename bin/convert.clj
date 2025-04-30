@@ -213,7 +213,7 @@
       (str/replace #"\[\[.*?\]\[.*?\]\]|\[\[.*?\]\]"
                    (fn [m] (process-org-link m)))))
 
-(defn process-lines [lines & {:keys [release footnotes]}]
+(defn process-lines [lines & {:keys [footnotes]}]
   (loop [lines lines
          out []
          state :normal]
@@ -279,15 +279,12 @@
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))
 
-;; --release=2025-04-30
 (defn -main [& args]
   (let [chapters-dir "chapters"
-        release-arg (first (filter #(re-find #"^--release" %) args))
-        release (when release-arg (second (str/split release-arg #"=")))
         input (read-all-chapters chapters-dir)
         lines (str/split-lines input)
         {:keys [lines footnotes]} (collect-footnotes-and-strip lines)
-        processed (process-lines lines :footnotes footnotes :release release)
+        processed (process-lines lines :footnotes footnotes)
         output (str/join "\n" processed)]
     (println output)))
 

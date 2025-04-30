@@ -116,7 +116,8 @@
     \vfill
     {\TitleFont Jakub Šťastný}\par
     \blank[2*big]
-    {\TitleFont\date}
+    \doifdocumentargument{release}{\tfa v\getdocumentargument{release}}
+    \doifnotdocumentargument{release}{\tfa\em Development version from \date.}
     %% \vfill
   \stopalignment
   \stopstandardmakeup

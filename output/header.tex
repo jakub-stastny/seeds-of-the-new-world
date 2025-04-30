@@ -160,3 +160,18 @@
   {\bf\color[TipTitleColor]{#1}}\par
   \blank[small]%
 }
+
+% References
+\newcount\RefNumber
+\RefNumber=0
+
+% Create a storage mechanism for references
+\def\AllReferences{}
+
+% Define reference function that adds a marker and stores the reference
+\def\ref#1{%
+  \global\advance\RefNumber by 1
+  \hbox{\bf R\the\RefNumber}% This displays the reference marker in text
+  \expandafter\gdef\expandafter\AllReferences\expandafter{\AllReferences
+    \noindent{\bf R\the\RefNumber}. #1\par\medskip}% This stores the reference for later
+}

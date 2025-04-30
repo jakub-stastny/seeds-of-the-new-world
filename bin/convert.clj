@@ -26,7 +26,9 @@
       ;; named: [fn:1]
       (str/replace #"\[fn:([^\]]+)\]"
                    (fn [[_ key]]
-                     (str "\\footnote{" (get footnotes key (str "??" key)) "}")))))
+                     (if (str/starts-with? key "ref:")
+                       (str "\\ref{" (get footnotes key (str "??" key)) "}")
+                       (str "\\footnote{" (get footnotes key (str "??" key)) "}"))))))
 
 (def block-types
   {"disclaimer" "disclaimer"

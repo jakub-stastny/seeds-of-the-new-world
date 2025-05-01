@@ -45,6 +45,7 @@
 \definefont[MainTitleFont][Serif at 24pt]
 \definefont[MainSubtitleFont][SerifItalic at 15pt]
 \definefont[TitleFont][Serif at 16pt]
+\definefont[AuthorFont][Serif at 11pt]
 \setuphead[chapter][
   style={\ChapterFont},
   color=indigo,
@@ -215,6 +216,6 @@
 
 \define[1]\author{%
   \blank[small]
-  \rightaligned{\lettertilde~#1}
+  \rightaligned{\AuthorFont\lettertilde~#1}
   \blank[small]
 }

@@ -5,6 +5,7 @@ Once released.
 * Build
 
 #+begin_src sh
+  # Build development version.
   build en/es/cz
 
   # Release needs a release date.

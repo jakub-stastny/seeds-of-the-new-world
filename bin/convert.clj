@@ -208,7 +208,7 @@
   (loop [lines lines
          out []
          state :normal
-         active-env nil]
+         active-block nil]
     (if (empty? lines)
       (if (= state :list)
         (conj out "\\stopitemize")
@@ -218,7 +218,7 @@
         (cond
           ;; Skip full-line comments
           (comment-line? line)
-          (recur rest-lines out state active-env)
+          (recur rest-lines out state active-block)
 
           ;; Start of a block
           (block-start? line)
@@ -233,13 +233,16 @@
 
                               :else
                               [(str "\\start" env)])]
-            (recur rest-lines (into new-out start-block) :block env))
+            (recur rest-lines (into new-out start-block) :block {:env env :title title :args args}))
 
           (block-end? line)
-          (let [stop-block (if (= active-env "blockquote")
-                             ["\\stopblockquote"]
-                             [(str "\\stop" active-env)])]
-            (recur rest-lines (into out stop-block) :normal nil))
+          (if active-block
+            (let [stop-block (if (= (:env active-block) "blockquote")
+                               [(when (:title active-block) (str "\\author{" (:title active-block) "}"))
+                                "\\stopblockquote"]
+                               [(str "\\stop" (:env active-block))])]
+              (recur rest-lines (into out stop-block) :normal nil))
+            (throw (ex-info "Found end of block, but no active block" {:babashka/exit 1})))
 
           ;; Headings
           (heading-line? line)
@@ -264,7 +267,7 @@
                             (conj out "\\stopitemize")
                             out)]
               ;; For :list, should reset env to nil.
-              (recur rest-lines (conj new-out (convert-inline footnotes line)) :normal active-env))))))))
+              (recur rest-lines (conj new-out (convert-inline footnotes line)) :normal active-block))))))))
 
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))

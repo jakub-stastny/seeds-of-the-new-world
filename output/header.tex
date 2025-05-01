@@ -96,6 +96,7 @@
 \define\stopdisclaimer{}
 
 \def\quoteline#1{\color[darkgray]{\em #1}\par}
+\def\quotationblock{\scale[factor=27]{\symbol[leftquotation]}\vskip -1cm}
 
 \def\TitlePage#1#2{%
   \startstandardmakeup
@@ -173,15 +174,9 @@
    offset=0.5em,
    loffset=1em,
    roffset=1em,
-   boffset=1em,
-   toffset=1em,
-   % now allow passing title
-   beforehead={\bf\blank[small]},
-   afterhead={\blank[small]},
-   style={\tfx\sans\setupinterlinespace[line=2.6ex]},
-   %% style={\tfxx\color[darkgray]}, % body style (optional)
-   titlestyle=\bf, % heading style
-   title={}, % default empty
+   boffset=1.2ex,
+   toffset=1.2ex,
+   style={\tfx\sans\setupinterlinespace[line=2.7ex]},
   ]
 
 \def\tiptitle#1{%

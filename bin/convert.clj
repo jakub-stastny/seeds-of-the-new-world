@@ -35,26 +35,21 @@
                          (str "\\footnote{" footnote "}")))))))
 
 (def block-types
-  {"disclaimer" "disclaimer"
-   "warning" "warning"
-   "quote" "blockquote"
-   "note" "note"})
+  {"disclaimer" :disclaimer, "warning" :warning, "quote" :blockquote, "note" :note})
 
 (defn match-block-type [type args]
-  (or (get block-types type)
-      (and (= type "example")
-           (cond
-             (not (contains? args :type)) "tip"
-             (= (:type args) "term") "definition"
+  (if-let [match (or (get block-types type)
+                     (and (= (keyword type) :example)
+                          (cond
+                            (not (contains? args :type)) :tip
+                            (= (:type args) "term") :definition)))]
+    (do
+      match)
 
-             true (throw (ex-info "Unknown block type" {:type type :args args}))))))
+    (throw (ex-info "Unknown block type" {:type type :args args}))))
 
 (def heading-levels
-  {1 "part"
-   2 "chapter"
-   3 "section"
-   4 "subsection"
-   5 "subsubsection"})
+  {1 "part" 2 "chapter" 3 "section" 4 "subsection" 5 "subsubsection"})
 
 (defn comment-line? [line]
   (boolean (or (re-find #"^\s*#(?!\s+\\) " line)
@@ -177,98 +172,113 @@
 
     :else link))
 
+(defn convert-utf-8 [line]
+  (-> line
+      ;; Quotes
+      (str/replace #"“([^”]+)”" "\\\\quotation{$1}")
+      (str/replace #"\"([^\"]+)\"" "\\\\quotation{$1}")
+
+      ;; Apostrophes
+      (str/replace #"’" "'")))
+
 (defn convert-inline [footnotes line]
   (-> line
       ;; TeX comments (# \page).
       (str/replace #"^\s*#\s+" "")
-      ;; ;; Footnotes
+
+      convert-utf-8
+
+      ;; Footnotes
       (replace-footnotes footnotes)
-      ;; Quotes
-      (str/replace #"“([^”]+)”" "\\\\quotation{$1}")
-      (str/replace #"\"([^\"]+)\"" "\\\\quotation{$1}")
-      ;; Apostrophes
-      (str/replace #"’" "'")
+
       ;; Italic: /italic/
-      (str/replace #"(?<=^|\s)/(.+?)/(?=\s|\.|,|;|:|$)" "\\\\emph{$1}")
+      (str/replace #"(?<=^|\s)/(.+?)/(?=\s|\.|,|;|:|$)" "{\\\\em $1}")
+
       ;; Bold: *bold*
-      (str/replace #"(?<=^|\s)\*(.+?)\*(?=\s|\.|,|;|:|$)" "{\\\\bf }")
+      (str/replace #"(?<=^|\s)\*(.+?)\*(?=\s|\.|,|;|:|$)" "{\\\\bf $1}")
+
       ;; Links
       (str/replace #"\[\[.*?\]\[.*?\]\]|\[\[.*?\]\]"
                    (fn [m] (process-org-link m)))))
 
-(defn process-comment-line [line] nil)
+(defn process-comment-line [line lineno] nil)
 
-(defn process-block-start-line [line]
+(defn process-block-start-line [line lineno]
   (let [{:keys [env title args] :as context} (block-start? line)]
     [context
-     (cond
-       (= env "blockquote")
-       ["" "\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
 
-       title
-       ["" (str "\\start" env) (str "\\" env "title{" title "}")]
+     ["" (str "\\start" (name env))
 
-       :else
-       ["" (str "\\start" env)])]))
+      (when (= env :blockquote)
+        "\\quotationblock")
 
-(defn process-block-end-line [line context]
+      (when (and (not (= env :blockquote)) title)
+        (str "\\" (name env) "title{" title "}"))]]))
+
+(defn process-block-end-line [line context lineno]
   (if context
-    (if (= (:env context) "blockquote")
+    (if (= (:env context) :blockquote)
       [(when (:title context) (str "\\author{" (:title context) "}"))
        "\\stopblockquote" ""]
-      [(str "\\stop" (:env context)) ""])
-    (throw (ex-info "Found end of block, but no active block" {:babashka/exit 1}))))
+      [(str "\\stop" (name (:env context))) ""])
+    (let [messages
+          ["Found end of block, but no active block"
+           (pr-str {:line line :lineno lineno :context context})]]
+      (throw (ex-info (str/join "\n\n" messages) {:babashka/exit 1})))))
 
-(defn process-heading-line [line]
+(defn process-heading-line [line lineno]
   (let [level (count (re-find #"^\*+" line))
         title (str/trim (subs line level))
         heading-type (get heading-levels level)
         format-fn (if (<= level 2) chapter-case sentence-case)]
-    ["" (str "\\" heading-type "[" (slugify title) "]{" (format-fn title) "}")]))
+    ["" (str "\\" heading-type "[" (slugify title) "]{" (format-fn (convert-utf-8 title)) "}")]))
 
-(defn process-text-line [line state context footnotes]
+(defn process-text-line [line state context footnotes lineno]
   (when (not (empty? line))
-    (if (= (:env context) "blockquote")
-      [(str "\\quoteline{" line "}")]
+    (if (= (:env context) :blockquote)
+      [(str "\\quoteline{" (convert-utf-8 line) "}")]
       [(convert-inline footnotes line)])))
 
-(defn process-list-item-line [line]
+(defn process-list-item-line [line lineno]
   [(str "\\item " (str/trim (subs line 1)))])
 
 (defn process-lines [lines & {:keys [footnotes]}]
   (loop [lines lines
+         lineno 0
          out []
          state :normal
          active-block nil]
     (if (empty? lines)
-      (if (= state :list)
-        (conj out "\\stopitemize\n")
-        out)
+      (if (= state :list) (conj out "\\stopitemize\n") out)
       (let [line (first lines)
+            lineno (inc lineno)
             rest-lines (rest lines)]
         (cond
+          (empty? line)
+          (recur rest-lines lineno (into out [""]) state active-block)
+
           (comment-line? line)
-          (recur rest-lines (into out (process-comment-line line)) state active-block)
+          (recur rest-lines lineno (into out (process-comment-line line lineno)) state active-block)
 
           (block-start? line)
-          (let [[context lines] (process-block-start-line line)
+          (let [[context lines] (process-block-start-line line lineno)
                 new-out (when (= state :list) ["\\stopitemize\n"] [])]
-            (recur rest-lines (into out (into (vec new-out) lines)) :block context))
+            (recur rest-lines lineno (into out (into (vec new-out) lines)) :block context))
 
           (block-end? line)
-          (recur rest-lines (into out (process-block-end-line line active-block)) :normal nil)
+          (recur rest-lines lineno (into out (process-block-end-line line active-block lineno)) :normal nil)
 
           (heading-line? line)
           (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)]
-            (recur rest-lines (into new-out (process-heading-line line)) :normal nil))
+            (recur rest-lines lineno (into new-out (process-heading-line line lineno)) :normal nil))
 
           (list-item? line)
           (let [new-out (if (= state :list) out (conj out "\n\\startitemize"))]
-            (recur rest-lines (into new-out (process-list-item-line line)) :list nil))
+            (recur rest-lines lineno (into new-out (process-list-item-line line lineno)) :list nil))
 
           :else
           (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)]
-            (recur rest-lines (into new-out (process-text-line line state active-block footnotes)) :normal active-block)))))))
+            (recur rest-lines lineno (into new-out (process-text-line line state active-block footnotes lineno)) :normal active-block)))))))
 
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))
@@ -276,10 +286,10 @@
 (defn -main [& args]
   (let [chapters-dir "chapters"
         input (read-all-chapters chapters-dir)
-        lines (str/split-lines input)
+        lines (map str/trim (str/split-lines input))
         {:keys [lines footnotes]} (collect-footnotes-and-strip lines)
         processed (process-lines lines :footnotes footnotes)
-        output (str/trim (str/join "\n" processed))]
+        output (str/trim (str/replace (str/join "\n" processed) #"\n{2,}" "\n\n"))]
     (println output)))
 
 ;; Allow running as script

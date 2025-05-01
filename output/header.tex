@@ -116,7 +116,8 @@
     \vfill
     {\TitleFont Jakub Šťastný}\par
     \blank[2*big]
-    \doifdocumentargument{release}{\tfa v\getdocumentargument{release}}
+    \doifdocumentargument{release}{\tfa \color[darkred]{v}\getdocumentargument{release}}
+    \doifdocumentargument{translation}{\tfa \color[darkred]{t}\getdocumentargument{translation}}
     \doifnotdocumentargument{release}{\tfa\em Development version from \date.}
     %% \vfill
   \stopalignment

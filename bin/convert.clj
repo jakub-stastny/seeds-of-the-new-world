@@ -10,12 +10,12 @@
 
 (defn collect-footnotes-and-strip [lines]
   (reduce (fn [{:keys [lines footnotes]} line]
-            (if-let [[_ key txt] (re-matches #".*\[fn:([^\]]+)\]\s+(.*)" line)]
-              {:texts lines
-               :footnotes (assoc footnotes key txt)}
-              {:texts (conj lines line)
-               :footnotes footnotes}))
-          {:texts [] :footnotes {}}
+            (if-let [[_ key txt] (re-matches #".*\[fn:([^\]]+)\]\s+(.*)" (:text line))]
+              (if (get footnotes key)
+                (throw (ex-info (str "Footnote with key " key " already defined") {:babashka/exit 1}))
+                {:lines lines :footnotes (assoc footnotes key txt)})
+              {:lines (conj lines line) :footnotes footnotes}))
+          {:lines [] :footnotes {}}
           lines))
 
 (defn replace-footnotes [line footnotes]
@@ -278,7 +278,7 @@
 (defn -main [& args]
   (let [chapters-dir "chapters"
         lines (read-all-chapters chapters-dir)
-        {:keys [lines_ footnotes]} (collect-footnotes-and-strip (map :text lines)) ;; TODO: here it overwrites
+        {:keys [lines footnotes]} (collect-footnotes-and-strip lines)
         processed (process-lines lines :footnotes footnotes)
         output (str/trim (str/replace (str/join "\n" processed) #"\n{2,}" "\n\n"))]
     (println output)))

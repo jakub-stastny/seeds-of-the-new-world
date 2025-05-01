@@ -203,20 +203,20 @@
     [context
      (cond
        (= env "blockquote")
-       ["\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
+       ["" "\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
 
        title
-       [(str "\\start" env) (str "\\" env "title{" title "}")]
+       ["" (str "\\start" env) (str "\\" env "title{" title "}")]
 
        :else
-       [(str "\\start" env)])]))
+       ["" (str "\\start" env)])]))
 
 (defn process-block-end-line [line context]
   (if context
     (if (= (:env context) "blockquote")
       [(when (:title context) (str "\\author{" (:title context) "}"))
-       "\\stopblockquote"]
-      [(str "\\stop" (:env context))])
+       "\\stopblockquote" ""]
+      [(str "\\stop" (:env context)) ""])
     (throw (ex-info "Found end of block, but no active block" {:babashka/exit 1}))))
 
 (defn process-heading-line [line]
@@ -224,10 +224,14 @@
         title (str/trim (subs line level))
         heading-type (get heading-levels level)
         format-fn (if (<= level 2) chapter-case sentence-case)]
-    [(str "\\" heading-type "[" (slugify title) "]{" (format-fn title) "}")]))
+    ["" (str "\\" heading-type "[" (slugify title) "]{" (format-fn title) "}")]))
 
-(defn process-text-line [line state active-block footnotes]
-  [(convert-inline footnotes line)])
+(defn process-text-line [line state context footnotes]
+  (when (not (empty? line))
+    (let [processed-line (convert-inline footnotes line)]
+      (if (= (:env context) "blockquote")
+        [(str "\\quoteline{" processed-line "}")]
+        [processed-line]))))
 
 (defn process-list-item-line [line]
   [(str "\\item " (str/trim (subs line 1)))])
@@ -239,32 +243,32 @@
          active-block nil]
     (if (empty? lines)
       (if (= state :list)
-        (conj out "\\stopitemize")
+        (conj out "\\stopitemize\n")
         out)
       (let [line (first lines)
             rest-lines (rest lines)]
         (cond
           (comment-line? line)
-          (recur rest-lines (conj out (process-comment-line line)) state active-block)
+          (recur rest-lines (into out (process-comment-line line)) state active-block)
 
           (block-start? line)
           (let [[context lines] (process-block-start-line line)
-                new-out (when (= state :list) ["\\stopitemize"] [])]
-            (recur rest-lines (into out (into new-out lines)) :block context))
+                new-out (when (= state :list) ["\\stopitemize\n"] [])]
+            (recur rest-lines (into out (into (vec new-out) lines)) :block context))
 
           (block-end? line)
           (recur rest-lines (into out (process-block-end-line line active-block)) :normal nil)
 
           (heading-line? line)
-          (let [new-out (if (= state :list) (conj out "\\stopitemize") out)]
+          (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)]
             (recur rest-lines (into new-out (process-heading-line line)) :normal nil))
 
           (list-item? line)
-          (let [new-out (if (= state :list) out (conj out "\\startitemize"))]
+          (let [new-out (if (= state :list) out (conj out "\n\\startitemize"))]
             (recur rest-lines (into new-out (process-list-item-line line)) :list nil))
 
           :else
-          (let [new-out (if (= state :list) (conj out "\\stopitemize") out)]
+          (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)]
             (recur rest-lines (into new-out (process-text-line line state active-block footnotes)) :normal active-block)))))))
 
 (defn read-all-chapters [dir]

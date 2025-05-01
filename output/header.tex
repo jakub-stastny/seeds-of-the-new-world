@@ -20,8 +20,8 @@
 
 \setupdelimitedtext[blockquote][
   %% style=italic,
-  style={\addfeature[blockquotefeature]\em}
-  color=darkgray,
+  %% style={\addfeature[blockquotefeature]\em}
+  %% color=darkgray,
   margin=standard,
   before={\blank[big]},
 ]
@@ -102,6 +102,8 @@
 %%   level=chapter,
 %%   alternative=c,
 %% ]
+
+\def\quoteline#1{\em #1}
 
 \def\TitlePage#1#2{%
   \startstandardmakeup

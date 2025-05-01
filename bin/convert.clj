@@ -11,28 +11,68 @@
 (defn collect-footnotes-and-strip [lines]
   (reduce (fn [{:keys [lines footnotes]} line]
             (if-let [[_ key txt] (re-matches #".*\[fn:([^\]]+)\]\s+(.*)" (:text line))]
-              (if (get footnotes key)
-                (throw (ex-info (str "Footnote with key " key " already defined") {:babashka/exit 1}))
-                {:lines lines :footnotes (assoc footnotes key txt)})
+              {:lines lines
+               :footnotes (if (get footnotes (keyword key))
+                            (update footnotes (keyword key) conj txt)
+                            (assoc footnotes (keyword key) [txt]))}
               {:lines (conj lines line) :footnotes footnotes}))
           {:lines [] :footnotes {}}
           lines))
 
-(defn replace-footnotes [line footnotes]
-  (-> line
-      ;; inline: [fn::text]
-      (str/replace #"\[fn::(.*?)\]"
-                   (fn [[_ txt]] (str "\\footnote{" txt "}")))
-      ;; named: [fn:1]
-      (str/replace #"\[fn:([^\]]+)\]"
-                   (fn [[_ key]]
-                     (let [footnote (get footnotes key)]
-                       (when-not footnote
-                         (throw (ex-info "Footnote not found" {:key key})))
+;; (if (str/starts-with? key "ref:")
+;;   (str "\\ref{\\goto{" footnote "}[url(" footnote ")]}")
+;;   (str "\\footnote{" footnote "}"))
 
-                       (if (str/starts-with? key "ref:")
-                         (str "\\ref{\\goto{" footnote "}[url(" footnote ")]}")
-                         (str "\\footnote{" footnote "}")))))))
+(def footnote-types
+  {:ref #(str "\\ref{\\goto{" % "}[url(" % ")]}")
+   :ftn #(str "\\footnote{" % "}")})
+
+(defn format-footnote [key item]
+  (if-let [formatter (get footnote-types key)]
+    (formatter item)
+    (throw (str "No such footnote key " key))))
+
+;; TODO: What are the right quotes? These look good: “basket”
+
+;; (defn replace-footnotes [{:keys [file lineno text] :as line} footnotes]
+;;   (-> text
+;;       ;; Inline: [fn::text].
+;;       (str/replace #"\[fn::(.+?)\]" (fn [[_ txt]] (format-footnote :ftn txt)))
+
+;;       ;; Sequential: [fn:ftn] and [fn:ref].
+;;       (str/replace #"\[fn:(\w+)\]"
+;;                    (fn [[_ key]]
+;;                      (let [key (keyword key)
+;;                            list (get footnotes key)]
+;;                        (format-footnote key (first list))))))
+
+;;   ;; [(assoc footnotes key rest)]
+;;   )
+
+(defn replace-footnotes [{:keys [text] :as line} footnotes]
+  (let [;; First handle inline footnotes: [fn::text]
+        [new-text1 _] (reduce
+                       (fn [[txt _] [match content]]
+                         [(str/replace txt match (format-footnote :ftn content)) nil])
+                       [text nil]
+                       (re-seq #"\[fn::(.+?)\]" text))
+
+        ;; Then handle sequential footnotes: [fn:ftn]
+        [new-text2 updated-footnotes] (reduce
+                                       (fn [[txt fns] [match key]]
+                                         (let [k (keyword key)
+                                               content (first (get fns k))
+                                               remaining (rest (get fns k))
+                                               new-fns (if (empty? remaining)
+                                                         (dissoc fns k)
+                                                         (assoc fns k remaining))]
+                                           [(str/replace txt match (format-footnote k content))
+                                            new-fns]))
+                                       [new-text1 footnotes]
+                                       (re-seq #"\[fn:(\w+)\]" new-text1))]
+
+    ;; Return both the updated line and the updated footnotes
+    [(assoc line :text new-text2) updated-footnotes]))
 
 (def block-types
   {"disclaimer" :disclaimer, "warning" :warning, "quote" :blockquote, "note" :note})
@@ -43,8 +83,7 @@
                           (cond
                             (not (contains? args :type)) :tip
                             (= (:type args) "term") :definition)))]
-    (do
-      match)
+    (do match)
 
     (throw (ex-info "Unknown block type" {:type type :args args}))))
 
@@ -166,15 +205,12 @@
       ;; Apostrophes
       (str/replace #"’" "'")))
 
-(defn convert-inline [footnotes line]
-  (-> line
+(defn convert-inline [{:keys [file lineno text] :as line}]
+  (-> text
       ;; TeX comments (# \page).
       (str/replace #"^\s*#\s+" "")
 
       convert-utf-8
-
-      ;; Footnotes
-      (replace-footnotes footnotes)
 
       ;; Italic: /italic/
       (str/replace #"(?<=^|\s)/(.+?)/(?=\s|\.|,|;|:|$)" "{\\\\em $1}")
@@ -183,8 +219,7 @@
       (str/replace #"(?<=^|\s)\*(.+?)\*(?=\s|\.|,|;|:|$)" "{\\\\bf $1}")
 
       ;; Links
-      (str/replace #"\[\[.*?\]\[.*?\]\]|\[\[.*?\]\]"
-                   (fn [m] (process-org-link m)))))
+      (str/replace #"\[\[.*?\]\[.*?\]\]|\[\[.*?\]\]" #(process-org-link %))))
 
 (defn process-comment-line [line] nil)
 
@@ -222,7 +257,7 @@
   (when (not (empty? text))
     (if (= (:env context) :blockquote)
       [(str "\\quoteline{" (convert-utf-8 text) "}")]
-      [(convert-inline footnotes text)])))
+      [(convert-inline line)])))
 
 (defn process-list-item-line [{:keys [file lineno text] :as line}]
   [(str "\\item " (str/trim (subs text 1)))])
@@ -230,38 +265,41 @@
 (defn process-lines [lines & {:keys [footnotes]}]
   (loop [lines lines
          out []
+         restant-footnotes footnotes
          state :normal
          active-block nil]
     (if (empty? lines)
       (if (= state :list) (conj out "\\stopitemize\n") out)
+
       (let [line (first lines)
             rest-lines (rest lines)]
         (cond
           (empty? (:text line))
-          (recur rest-lines (into out [""]) state active-block)
+          (recur rest-lines (into out [""]) footnotes state active-block)
 
           (comment-line? (:text line))
-          (recur rest-lines (into out (process-comment-line line)) state active-block)
+          (recur rest-lines (into out (process-comment-line line)) footnotes state active-block)
 
           (block-start? line)
           (let [[context lines] (process-block-start-line line)
                 new-out (when (= state :list) ["\\stopitemize\n"] [])]
-            (recur rest-lines (into out (into (vec new-out) lines)) :block context))
+            (recur rest-lines (into out (into (vec new-out) lines)) footnotes :block context))
 
           (block-end? line)
-          (recur rest-lines (into out (process-block-end-line line active-block)) :normal nil)
+          (recur rest-lines (into out (process-block-end-line line active-block)) footnotes :normal nil)
 
           (heading-line? line)
           (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)]
-            (recur rest-lines (into new-out (process-heading-line line)) :normal nil))
+            (recur rest-lines (into new-out (process-heading-line line)) footnotes :normal nil))
 
           (list-item? line)
           (let [new-out (if (= state :list) out (conj out "\n\\startitemize"))]
-            (recur rest-lines (into new-out (process-list-item-line line)) :list nil))
+            (recur rest-lines (into new-out (process-list-item-line line)) footnotes :list nil))
 
           :else
-          (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)]
-            (recur rest-lines (into new-out (process-text-line line state active-block footnotes)) :normal active-block)))))))
+          (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)
+                updated-footnotes (replace-footnotes line footnotes)]
+            (recur rest-lines (into new-out (process-text-line line state active-block footnotes)) updated-footnotes :normal active-block)))))))
 
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))

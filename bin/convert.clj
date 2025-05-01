@@ -228,10 +228,9 @@
 
 (defn process-text-line [line state context footnotes]
   (when (not (empty? line))
-    (let [processed-line (convert-inline footnotes line)]
-      (if (= (:env context) "blockquote")
-        [(str "\\quoteline{" processed-line "}")]
-        [processed-line]))))
+    (if (= (:env context) "blockquote")
+      [(str "\\quoteline{" line "}")]
+      [(convert-inline footnotes line)])))
 
 (defn process-list-item-line [line]
   [(str "\\item " (str/trim (subs line 1)))])
@@ -280,7 +279,7 @@
         lines (str/split-lines input)
         {:keys [lines footnotes]} (collect-footnotes-and-strip lines)
         processed (process-lines lines :footnotes footnotes)
-        output (str/join "\n" processed)]
+        output (str/trim (str/join "\n" processed))]
     (println output)))
 
 ;; Allow running as script

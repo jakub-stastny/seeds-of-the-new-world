@@ -95,15 +95,7 @@
 
 \define\stopdisclaimer{}
 
-% ToC (doesn't work).
-% TODO: Translations: \setupheadtext[content=Obsah]
-%% \setupcombinedlist[contentlist][
-%%   interaction=all,
-%%   level=chapter,
-%%   alternative=c,
-%% ]
-
-\def\quoteline#1{\em #1}
+\def\quoteline#1{\color[darkgray]{\em #1}\par}
 
 \def\TitlePage#1#2{%
   \startstandardmakeup

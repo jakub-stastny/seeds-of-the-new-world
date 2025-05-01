@@ -19,7 +19,8 @@
 \setupbodyfont[palatino,11pt] % or latin-modern, whatever font you prefer
 
 \setupdelimitedtext[blockquote][
-  style=italic,
+  %% style=italic,
+  style={\addfeature[blockquotefeature]\em}
   color=darkgray,
   margin=standard,
   before={\blank[big]},

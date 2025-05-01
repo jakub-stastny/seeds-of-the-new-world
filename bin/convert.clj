@@ -151,14 +151,6 @@
       (str/replace #"[^a-z0-9]+" "-")
       (str/replace #"(^-|-$)" "")))
 
-(defn process-heading [line]
-  (let [level (count (re-find #"^\*+" line))
-        title (str/trim (subs line level))
-        heading-type (get heading-levels level)
-        format-fn (if (<= level 2) chapter-case sentence-case)]
-    (when heading-type
-      (str "\\" heading-type "[" (slugify title) "]{" (format-fn title) "}"))))
-
 ;; [[https://example.com][Example Site]]
 ;; \goto{Example Site}[url(https://example.com)]
 ;;
@@ -204,6 +196,39 @@
       (str/replace #"\[\[.*?\]\[.*?\]\]|\[\[.*?\]\]"
                    (fn [m] (process-org-link m)))))
 
+(defn process-comment-line [line] nil)
+
+(defn process-block-start-line [line]
+  (let [{:keys [env title args] :as context} (block-start? line)]
+    [context
+     (cond
+       (= env "blockquote")
+       ["\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
+
+       title
+       [(str "\\start" env) (str "\\" env "title{" title "}")]
+
+       :else
+       [(str "\\start" env)])]))
+
+(defn process-block-end-line [line context]
+  (if context
+    (if (= (:env context) "blockquote")
+      [(when (:title context) (str "\\author{" (:title context) "}"))
+       "\\stopblockquote"]
+      [(str "\\stop" (:env context))])
+    (throw (ex-info "Found end of block, but no active block" {:babashka/exit 1}))))
+
+(defn process-heading-line [line]
+  (let [level (count (re-find #"^\*+" line))
+        title (str/trim (subs line level))
+        heading-type (get heading-levels level)
+        format-fn (if (<= level 2) chapter-case sentence-case)]
+    [(str "\\" heading-type "[" (slugify title) "]{" (format-fn title) "}")]))
+
+(defn process-list-item-line [line]
+  [(str "\\item " (str/trim (subs line 1)))])
+
 (defn process-lines [lines & {:keys [footnotes]}]
   (loop [lines lines
          out []
@@ -216,49 +241,25 @@
       (let [line (first lines)
             rest-lines (rest lines)]
         (cond
-          ;; Skip full-line comments
           (comment-line? line)
-          (recur rest-lines out state active-block)
+          (recur rest-lines (conj out (process-comment-line line)) state active-block)
 
-          ;; Start of a block
           (block-start? line)
-          (let [{:keys [env title args]} (block-start? line)
-                new-out (if (= state :list) (conj out "\\stopitemize") out)
-                start-block (cond
-                              (= env "blockquote")
-                              ["\\startblockquote" "\\scale[factor=27]{\\symbol[leftquotation]}" "\\vskip -1cm"]
-
-                              title
-                              [(str "\\start" env) (str "\\" env "title{" title "}")]
-
-                              :else
-                              [(str "\\start" env)])]
-            (recur rest-lines (into new-out start-block) :block {:env env :title title :args args}))
+          (let [[context lines] (process-block-start-line line)
+                new-out (when (= state :list) ["\\stopitemize"] [])]
+            (recur rest-lines (into out (into new-out lines)) :block context))
 
           (block-end? line)
-          (if active-block
-            (let [stop-block (if (= (:env active-block) "blockquote")
-                               [(when (:title active-block) (str "\\author{" (:title active-block) "}"))
-                                "\\stopblockquote"]
-                               [(str "\\stop" (:env active-block))])]
-              (recur rest-lines (into out stop-block) :normal nil))
-            (throw (ex-info "Found end of block, but no active block" {:babashka/exit 1})))
+          (recur rest-lines (into out (process-block-end-line line active-block)) :normal nil)
 
-          ;; Headings
           (heading-line? line)
-          (do
-            (let [new-out (if (= state :list)
-                            (conj out "\\stopitemize")
-                            out)]
-              (recur rest-lines (conj new-out (process-heading line)) :normal nil)))
+          (let [new-out (if (= state :list) (conj out "\\stopitemize") out)]
+            (recur rest-lines (into new-out (process-heading-line line)) :normal nil))
 
           ;; List items
           (list-item? line)
-          (do
-            (let [new-out (if (= state :list)
-                            out
-                            (conj out "\\startitemize"))]
-              (recur rest-lines (conj new-out (str "\\item " (str/trim (subs line 1)))) :list nil)))
+          (let [new-out (if (= state :list) out (conj out "\\startitemize"))]
+            (recur rest-lines (into new-out (process-list-item-line line)) :list nil))
 
           ;; Regular paragraph or inline content
           :else

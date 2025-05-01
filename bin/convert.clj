@@ -226,6 +226,9 @@
         format-fn (if (<= level 2) chapter-case sentence-case)]
     [(str "\\" heading-type "[" (slugify title) "]{" (format-fn title) "}")]))
 
+(defn process-text-line [line state active-block footnotes]
+  [(convert-inline footnotes line)])
+
 (defn process-list-item-line [line]
   [(str "\\item " (str/trim (subs line 1)))])
 
@@ -256,19 +259,13 @@
           (let [new-out (if (= state :list) (conj out "\\stopitemize") out)]
             (recur rest-lines (into new-out (process-heading-line line)) :normal nil))
 
-          ;; List items
           (list-item? line)
           (let [new-out (if (= state :list) out (conj out "\\startitemize"))]
             (recur rest-lines (into new-out (process-list-item-line line)) :list nil))
 
-          ;; Regular paragraph or inline content
           :else
-          (do
-            (let [new-out (if (= state :list)
-                            (conj out "\\stopitemize")
-                            out)]
-              ;; For :list, should reset env to nil.
-              (recur rest-lines (conj new-out (convert-inline footnotes line)) :normal active-block))))))))
+          (let [new-out (if (= state :list) (conj out "\\stopitemize") out)]
+            (recur rest-lines (into new-out (process-text-line line state active-block footnotes)) :normal active-block)))))))
 
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))

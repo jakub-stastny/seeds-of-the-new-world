@@ -1,8 +1,5 @@
 #!/usr/bin/env bb
 
-;; FIXME: lineno doesn't quite work, we need to pass not just lines, but:
-;; [{:file "chapters/01-introduction.org :line 1"} "* Introduction"]}
-
 (ns convert
   (:require [clojure.string :as str]
             [babashka.fs :as fs]))
@@ -14,11 +11,11 @@
 (defn collect-footnotes-and-strip [lines]
   (reduce (fn [{:keys [lines footnotes]} line]
             (if-let [[_ key txt] (re-matches #".*\[fn:([^\]]+)\]\s+(.*)" line)]
-              {:lines lines
+              {:texts lines
                :footnotes (assoc footnotes key txt)}
-              {:lines (conj lines line)
+              {:texts (conj lines line)
                :footnotes footnotes}))
-          {:lines [] :footnotes {}}
+          {:texts [] :footnotes {}}
           lines))
 
 (defn replace-footnotes [line footnotes]
@@ -58,8 +55,8 @@
   (boolean (or (re-find #"^\s*#(?!\s+\\) " line)
                (re-find #"@@comment:" line))))
 
-(defn list-item? [line]
-  (re-matches #"^\s*-\s+.+$" line))
+(defn list-item? [{:keys [file lineno text] :as line}]
+  (re-matches #"^\s*-\s+.+$" text))
 
 (defn parse-org-block-args [arg-str]
   (let [arg-str (str/trim arg-str)
@@ -80,17 +77,17 @@
                   (into {}))]
     [(when (seq positional) positional), opts]))
 
-(defn block-start? [line]
-  (when-let [[_ block-type raw-args] (re-find #"(?i)^#\+begin_(\w+)\s*(.*)" line)]
+(defn block-start? [{:keys [file lineno text] :as line}]
+  (when-let [[_ block-type raw-args] (re-find #"(?i)^#\+begin_(\w+)\s*(.*)" text)]
     (let [[title args] (parse-org-block-args raw-args)]
       (when-let [env (match-block-type (str/lower-case block-type) args)]
         {:env env :title title :args args}))))
 
-(defn block-end? [line]
-  (boolean (re-find #"(?i)^#\+end_(\w+)" line)))
+(defn block-end? [{:keys [file lineno text] :as line}]
+  (boolean (re-find #"(?i)^#\+end_(\w+)" text)))
 
-(defn heading-line? [line]
-  (re-matches #"^\*+ .+" line))
+(defn heading-line? [{:keys [file lineno text] :as line}]
+  (re-matches #"^\*+ .+" text))
 
 (def stopwords
   #{"a" "an" "the" "and" "but" "or" "for" "nor" "on" "at" "to" "from" "by" "of" "in" "with" "over"})
@@ -189,9 +186,9 @@
       (str/replace #"\[\[.*?\]\[.*?\]\]|\[\[.*?\]\]"
                    (fn [m] (process-org-link m)))))
 
-(defn process-comment-line [line lineno] nil)
+(defn process-comment-line [line] nil)
 
-(defn process-block-start-line [line lineno]
+(defn process-block-start-line [{:keys [file lineno text] :as line}]
   (let [{:keys [env title args] :as context} (block-start? line)]
     [context
 
@@ -203,7 +200,7 @@
       (when (and (not (= env :blockquote)) title)
         (str "\\" (name env) "title{" title "}"))]]))
 
-(defn process-block-end-line [line context lineno]
+(defn process-block-end-line [{:keys [file lineno text] :as line} context]
   (if context
     (if (= (:env context) :blockquote)
       [(when (:title context) (str "\\author{" (:title context) "}"))
@@ -211,71 +208,77 @@
       [(str "\\stop" (name (:env context))) ""])
     (let [messages
           ["Found end of block, but no active block"
-           (pr-str {:line line :lineno lineno :context context})]]
+           (pr-str (assoc line :context context))]]
       (throw (ex-info (str/join "\n\n" messages) {:babashka/exit 1})))))
 
-(defn process-heading-line [line lineno]
-  (let [level (count (re-find #"^\*+" line))
-        title (str/trim (subs line level))
+(defn process-heading-line [{:keys [file lineno text] :as line}]
+  (let [level (count (re-find #"^\*+" text))
+        title (str/trim (subs text level))
         heading-type (get heading-levels level)
         format-fn (if (<= level 2) chapter-case sentence-case)]
     ["" (str "\\" heading-type "[" (slugify title) "]{" (format-fn (convert-utf-8 title)) "}")]))
 
-(defn process-text-line [line state context footnotes lineno]
-  (when (not (empty? line))
+(defn process-text-line [{:keys [file lineno text] :as line} state context footnotes]
+  (when (not (empty? text))
     (if (= (:env context) :blockquote)
-      [(str "\\quoteline{" (convert-utf-8 line) "}")]
-      [(convert-inline footnotes line)])))
+      [(str "\\quoteline{" (convert-utf-8 text) "}")]
+      [(convert-inline footnotes text)])))
 
-(defn process-list-item-line [line lineno]
-  [(str "\\item " (str/trim (subs line 1)))])
+(defn process-list-item-line [{:keys [file lineno text] :as line}]
+  [(str "\\item " (str/trim (subs text 1)))])
 
 (defn process-lines [lines & {:keys [footnotes]}]
   (loop [lines lines
-         lineno 0
          out []
          state :normal
          active-block nil]
     (if (empty? lines)
       (if (= state :list) (conj out "\\stopitemize\n") out)
       (let [line (first lines)
-            lineno (inc lineno)
             rest-lines (rest lines)]
         (cond
-          (empty? line)
-          (recur rest-lines lineno (into out [""]) state active-block)
+          (empty? (:text line))
+          (recur rest-lines (into out [""]) state active-block)
 
-          (comment-line? line)
-          (recur rest-lines lineno (into out (process-comment-line line lineno)) state active-block)
+          (comment-line? (:text line))
+          (recur rest-lines (into out (process-comment-line line)) state active-block)
 
           (block-start? line)
-          (let [[context lines] (process-block-start-line line lineno)
+          (let [[context lines] (process-block-start-line line)
                 new-out (when (= state :list) ["\\stopitemize\n"] [])]
-            (recur rest-lines lineno (into out (into (vec new-out) lines)) :block context))
+            (recur rest-lines (into out (into (vec new-out) lines)) :block context))
 
           (block-end? line)
-          (recur rest-lines lineno (into out (process-block-end-line line active-block lineno)) :normal nil)
+          (recur rest-lines (into out (process-block-end-line line active-block)) :normal nil)
 
           (heading-line? line)
           (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)]
-            (recur rest-lines lineno (into new-out (process-heading-line line lineno)) :normal nil))
+            (recur rest-lines (into new-out (process-heading-line line)) :normal nil))
 
           (list-item? line)
           (let [new-out (if (= state :list) out (conj out "\n\\startitemize"))]
-            (recur rest-lines lineno (into new-out (process-list-item-line line lineno)) :list nil))
+            (recur rest-lines (into new-out (process-list-item-line line)) :list nil))
 
           :else
           (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)]
-            (recur rest-lines lineno (into new-out (process-text-line line state active-block footnotes lineno)) :normal active-block)))))))
+            (recur rest-lines (into new-out (process-text-line line state active-block footnotes)) :normal active-block)))))))
 
 (defn read-all-chapters [dir]
   (str/join "\n\n" (map (comp slurp str) (sort (fs/glob dir "*.org")))))
 
+
+(defn read-all-chapters [dir]
+  (let [paths (sort (map str (fs/glob dir "*.org")))]
+    (mapcat (fn [path]
+              (map-indexed
+               (fn [i line] {:file path :lineno (inc i) :text (str/trim line)})
+               (str/split-lines (slurp path))))
+            paths)))
+
 (defn -main [& args]
   (let [chapters-dir "chapters"
-        input (read-all-chapters chapters-dir)
-        lines (map str/trim (str/split-lines input))
-        {:keys [lines footnotes]} (collect-footnotes-and-strip lines)
+        lines (read-all-chapters chapters-dir)
+        {:keys [lines_ footnotes]} (collect-footnotes-and-strip (map :text lines)) ;; TODO: here it overwrites
         processed (process-lines lines :footnotes footnotes)
         output (str/trim (str/replace (str/join "\n" processed) #"\n{2,}" "\n\n"))]
     (println output)))

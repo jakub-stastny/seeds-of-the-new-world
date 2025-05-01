@@ -1,5 +1,8 @@
 #!/usr/bin/env bb
 
+;; FIXME: lineno doesn't quite work, we need to pass not just lines, but:
+;; [{:file "chapters/01-introduction.org :line 1"} "* Introduction"]}
+
 (ns convert
   (:require [clojure.string :as str]
             [babashka.fs :as fs]))
@@ -117,28 +120,13 @@
                 word'))))
          (str/join " "))))
 
+;; TODO: Handle this in TeX
 ;; Moc roztahany.
 (defn chapter-case [s]
   (str/replace (title-case s) ":" "\\colon~"))
 
 (defn sentence-case [s]
-  (let [words (str/split (str/trim s) #"\s+")]
-    (if (empty? words)
-      ""
-      (str (let [first-word (first words)]
-             (if (not (lowercase-or-titlecase? first-word))
-               first-word
-               (str (str/upper-case (subs first-word 0 1))
-                    (str/lower-case (subs first-word 1)))))
-           (when (> (count words) 1)
-             (str " " (->> (rest words)
-                           (map (fn [word]
-                                  (if (not (lowercase-or-titlecase? word))
-                                    word
-                                    (if (= word (str/lower-case word))
-                                      (str/lower-case word)
-                                      word)))) ; preserve TitleCase words!
-                           (str/join " "))))))))
+  (str/replace s #"^." #(str/upper-case %)))
 
 (defn slugify [s]
   (-> s

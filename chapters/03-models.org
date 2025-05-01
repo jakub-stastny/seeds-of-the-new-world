@@ -5,29 +5,29 @@
 
 Collapse never comes from nowhere. It builds quietly, invisibly, until the moment it can no longer be denied. Civilisations that once seemed invincible disintegrate not from a single blow, but from a thousand small fractures ignored by the proud and the powerful.
 
-*** Sumer (c. 2100 bce)
+*** Sumer (c. 2100 BCE)
 
 The first known civilisation also left the first known scars. Sumerian cities flourished in Mesopotamia, driven by irrigation farming. But over centuries, intensive agriculture led to salinisation — salt buildup poisoned the soils. Crop yields collapsed. Cities emptied. Political structures fragmented. Environmental exhaustion, not foreign conquest, shattered Sumer. The lesson: even the first steps into "civilisation" carried seeds of collapse when life was reduced to extraction.
 
-*** Ancient Egypt (Old Kingdom collapse c. 2200 bce)
+*** Ancient Egypt (Old Kingdom collapse c. 2200 BCE)
 
 Egypt offers a different pattern: not a final fall, but cycles of collapse and rebirth. The Old Kingdom ended when severe droughts shrank the Nile floods that fed Egyptian agriculture. Without regular floods, the food supply dried up. Central authority collapsed. The state disintegrated into local warlords. Egypt eventually reunited, but the cracks never fully disappeared. Environmental dependency, and the illusion of permanent abundance, would haunt Egypt across millennia.
 
-*** Han dynasty (collapse 220 ce)
+*** Han dynasty (collapse 220 CE)
 
 The Han Dynasty was one of China's golden ages — but like all great empires, it rotted from within. Overexpansion drained the treasury. Land concentration in the hands of the elite squeezed the peasantry into desperation. Corruption flourished. When natural disasters struck, the fragile social contract snapped. Massive peasant revolts — like the Yellow Turban Rebellion — shattered central authority. The empire splintered into warring factions. The Han collapsed not from a lack of strength, but from internal rot ignored until it was too late.
 
-*** The fall of Rome (476 ce)
+*** The fall of Rome (476 CE)
 
 Rome rotted long before it fell. In its desperation to fund endless wars and bloated bureaucracy, Rome debased its silver coinage — cutting more base metals into coins while pretending they were still pure. Trust evaporated. Prices soared as coins lost real value. Soldiers demanded higher pay. Merchants demanded more coins for the same goods. Inflation shredded the economy at its core[fn::Yes, inflation happened already in antiquity, some 1,500 years before fiat became a thing.].
 
 Meanwhile, greedy expansion stripped forests and drained soils, weakening the food base. Taxes crushed the free peasantry, forcing millions into dependence and servitude. Political decay ran rampant — a bloated bureaucracy, leaders obsessed with their own survival, not the survival of the state. Rome's armies, once feared across the world, degenerated into mercenaries with no loyalty beyond pay. By the time the "barbarians" crossed the borders, Rome was already a corpse. They simply tore down what was hollow.
 
-*** Mayan collapse (c. 900 ce)
+*** Mayan collapse (c. 900 CE)
 
 At the height of their civilisation, the Maya built towering cities and elaborate temples — but at a fatal cost. Forests were razed for farmland. The soil, pushed beyond its limits, began to fail. As droughts struck, the elites responded not with reform, but with even grander monuments and blood rituals, desperate to hold onto crumbling power. Resources that could have fed the people were spent on displays of fading glory. As famine spread, cities emptied, power structures dissolved, and the jungle reclaimed what was left. The Maya didn't simply collapse — they sacrificed themselves on the altar of denial.
 
-*** Easter island (collapse by c. 1600 ce)
+*** Easter island (collapse by c. 1600 CE)
 
 Few stories are starker than Easter Island. A once-forested paradise turned into barren grassland. In their obsession with building larger and larger stone statues, the islanders felled every tree, destroyed their ability to fish, and exhausted their soil. With no timber, no boats, and no way to escape, the society collapsed into war, starvation, and cannibalism. By the time Europeans arrived, Easter Island was a haunted wasteland — the silent ruins of a people who quite literally built themselves into extinction.
 
@@ -39,7 +39,7 @@ But as wealth accumulated, the Dutch economy shifted away from production and na
 
 By the 18th century, Dutch banks were no longer fuelling Dutch expansion — they were financing the rise of Britain. The flow of wealth reversed. Amsterdam, once the centre of world finance, became a second-tier city. The Dutch Empire did not fall to invasion; it fell because its financial system hollowed out the productive core, leaving a rich but defenceless shell. Like Rome before them and America after, the Dutch drowned in the illusion of paper wealth while their real strength decayed.
 
-*** Aztec empire (collapse 1521 ce)
+*** Aztec empire (collapse 1521 CE)
 
 The Aztecs built a stunning imperial system centred on Tenochtitlán, a city of engineering marvels with causeways, aqueducts, and floating gardens. Their empire expanded rapidly through warfare, extracting tribute in goods, food, and captives from a network of conquered city-states. But the system was brittle. It was built not on integration, but domination. Subject peoples resented Aztec rule deeply, trapped in a cycle of heavy taxation and human sacrifice to feed the religious and political machinery of the empire.
 

@@ -138,7 +138,7 @@
   [(str "\\item " (str/trim (subs text 1)))])
 
 (defn process-lines [lines & {:keys [footnotes]}]
-  (loop [lines lines
+  (loop [lines (subvec lines 2) ;; Skip the GH note.
          out []
          restant-footnotes footnotes
          state :normal

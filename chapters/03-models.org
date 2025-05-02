@@ -1,5 +1,6 @@
+/It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes./
+
 * Models of collapse
-@@comment: It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes.@@.
 
 ** Dying imperium: lessons from history
 

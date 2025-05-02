@@ -1,5 +1,6 @@
+/It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes./
+
 * New hope
-@@comment: It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes.@@.
 
   Here's the thing: many people are already living in the new Earth. It's been such a quiet shift, many never noticed it. Yet, the wise don't need to shout and the truly powerful don't need to hit. More and more people joined the silent non-movement and started to grow their own produce, use eco-friendly technology and mainly -- and very much in line with the sleeping phoenix -- they took the responsibility for themselves.
 

@@ -1,5 +1,6 @@
 (ns convert.footnotes
-  (:require [clojure.string :as str]))
+  (:require [clojure.string :as str]
+            [convert.helpers :refer [dbg]]))
 
 (defn collect-footnotes-and-strip [lines]
   (reduce (fn [{:keys [lines footnotes]} line]
@@ -12,10 +13,6 @@
           {:lines [] :footnotes {}}
           lines))
 
-;; (if (str/starts-with? key "ref:")
-;;   (str "\\ref{\\goto{" footnote "}[url(" footnote ")]}")
-;;   (str "\\footnote{" footnote "}"))
-
 (def footnote-types
   {:ref #(str "\\ref{\\goto{" % "}[url(" % ")]}")
    :ftn #(str "\\footnote{" % "}")})
@@ -24,8 +21,6 @@
   (if-let [formatter (get footnote-types key)]
     (formatter item)
     (throw (str "No such footnote key " key))))
-
-;; TODO: What are the right quotes? These look good: “basket”
 
 ;; (defn replace-footnotes [{:keys [file lineno text] :as line} footnotes]
 ;;   (-> text

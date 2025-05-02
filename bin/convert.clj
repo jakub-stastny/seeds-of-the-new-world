@@ -1,15 +1,14 @@
 #!/usr/bin/env bb -cp src
 
+;; TODO: What are the right quotes? These look good: “basket”
+
 (ns convert
   (:require [clojure.string :as str]
             [convert.string :as cs]
             [convert.processors :as pc]
             [convert.footnotes :as fn]
+            [convert.helpers :refer [dbg]]
             [babashka.fs :as fs]))
-
-;; Bypass STDOUT redirect.
-(defn dbg [& args]
-  (binding [*out* *err*] (apply prn args)))
 
 (defn read-all-chapters [dir]
   (let [paths (sort (map str (fs/glob dir "*.org")))]

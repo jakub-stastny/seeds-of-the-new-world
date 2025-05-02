@@ -22,59 +22,44 @@
     (formatter item)
     (throw (str "No such footnote key " key))))
 
-;; (defn replace-footnotes [{:keys [file lineno text] :as line} footnotes]
-;;   (-> text
-;;       ;; Inline: [fn::text].
-;;       (str/replace #"\[fn::(.+?)\]" (fn [[_ txt]] (format-footnote :ftn txt)))
+;; Process text with regex pattern and apply a handler to each match
+(defn process-matches [text footnotes pattern handler-fn]
+  (let [matcher (re-matcher pattern text)]
+    (loop [result ""
+           last-idx 0
+           current-footnotes footnotes]
+      (if (.find matcher)
+        (let [start (.start matcher)
+              match (.group matcher)
+              groups (map #(.group matcher %) (range 1 (inc (.groupCount matcher))))
+              [replacement new-footnotes] (apply handler-fn current-footnotes match groups)
+              new-result (str result
+                              (subs text last-idx start)
+                              replacement)]
+          (recur new-result (.end matcher) new-footnotes))
+        ;; Add the remaining text after the last match
+        [(str result (subs text last-idx)) current-footnotes]))))
 
-;;       ;; Sequential: [fn:ftn] and [fn:ref].
-;;       (str/replace #"\[fn:(\w+)\]"
-;;                    (fn [[_ key]]
-;;                      (let [key (keyword key)
-;;                            list (get footnotes key)]
-;;                        (format-footnote key (first list))))))
+;; Handle sequential footnotes [fn:name]
+(defn process-sequential-footnotes [text footnotes]
+  (process-matches text footnotes #"\[fn:(\w+)\]"
+                   (fn [fns match key]
+                     (let [k (keyword key)
+                           content (first (get fns k))
+                           remaining (rest (get fns k))
+                           new-fns (if (empty? remaining)
+                                     (dissoc fns k)
+                                     (assoc fns k remaining))]
+                       [(format-footnote k content) new-fns]))))
 
-;;   ;; [(assoc footnotes key rest)]
-;;   )
-
+;; Replace inline footnotes [fn::text]
 (defn replace-inline-footnotes [{:keys [text] :as line}]
   (str/replace text #"\[fn::(.+?)\]" (fn [[_ txt]] (format-footnote :ftn txt))))
 
+;; Main function that combines both types of footnote processing
 (defn replace-footnotes [{:keys [text] :as line} footnotes]
-  [footnotes (assoc line :text (replace-inline-footnotes line))]
+  (let [text-with-inline-replaced (replace-inline-footnotes line)
+        [updated-text updated-footnotes] (process-sequential-footnotes text-with-inline-replaced footnotes)]
 
-  ;; (letfn [(process-matches [text footnotes pattern handler-fn]
-  ;;           (let [matcher (re-matcher pattern text)]
-  ;;             (loop [result ""
-  ;;                    last-idx 0
-  ;;                    current-footnotes footnotes]
-  ;;               (if (.find matcher)
-  ;;                 (let [start (.start matcher)
-  ;;                       match (.group matcher)
-  ;;                       groups (map #(.group matcher %) (range 1 (inc (.groupCount matcher))))
-  ;;                       [replacement new-footnotes] (apply handler-fn current-footnotes match groups)
-  ;;                       new-result (str result
-  ;;                                       (subs text last-idx start)
-  ;;                                       replacement)]
-  ;;                   (recur new-result (.end matcher) new-footnotes))
-  ;;                 ;; Add the remaining text after the last match
-  ;;                 [(str result (subs text last-idx)) current-footnotes]))))]
-
-  ;;   ;; First process inline footnotes using the extracted function
-  ;;   (let [text-with-inline-replaced (replace-inline-footnotes line)
-
-  ;;         ;; Then process sequential footnotes [fn:name]
-  ;;         [text2 footnotes2]
-  ;;         (process-matches text-with-inline-replaced footnotes #"\[fn:(\w+)\]"
-  ;;                          (fn [fns match key]
-  ;;                            (let [k (keyword key)
-  ;;                                  content (first (get fns k))
-  ;;                                  remaining (rest (get fns k))
-  ;;                                  new-fns (if (empty? remaining)
-  ;;                                            (dissoc fns k)
-  ;;                                            (assoc fns k remaining))]
-  ;;                              [(format-footnote k content) new-fns])))]
-
-  ;;     ;; Return both the updated line and the updated footnotes
-  ;;     [(assoc line :text text2) footnotes2]))
-  )
+    ;; Return both the updated line and the updated footnotes
+    [(assoc line :text updated-text) updated-footnotes]))

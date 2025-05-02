@@ -128,7 +128,7 @@
         format-fn (if (<= level 2) chapter-case cs/sentence-case)]
     ["" (str "\\" heading-type "[" (cs/slugify title) "]{" (format-fn (convert-utf-8 title)) "}")]))
 
-(defn process-text-line [{:keys [file lineno text] :as line} state context footnotes]
+(defn process-text-line [{:keys [file lineno text] :as line} state context]
   (when (not (empty? text))
     (if (= (:env context) :blockquote)
       [(str "\\quoteline{" (convert-utf-8 text) "}")]
@@ -150,28 +150,28 @@
             rest-lines (rest lines)]
         (cond
           (empty? (:text line))
-          (recur rest-lines (into out [""]) footnotes state active-block)
+          (recur rest-lines (into out [""]) restant-footnotes state active-block)
 
           (comment-line? (:text line))
-          (recur rest-lines (into out (process-comment-line line)) footnotes state active-block)
+          (recur rest-lines (into out (process-comment-line line)) restant-footnotes state active-block)
 
           (block-start? line)
           (let [[context lines] (process-block-start-line line)
                 new-out (when (= state :list) ["\\stopitemize\n"] [])]
-            (recur rest-lines (into out (into (vec new-out) lines)) footnotes :block context))
+            (recur rest-lines (into out (into (vec new-out) lines)) restant-footnotes :block context))
 
           (block-end? line)
-          (recur rest-lines (into out (process-block-end-line line active-block)) footnotes :normal nil)
+          (recur rest-lines (into out (process-block-end-line line active-block)) restant-footnotes :normal nil)
 
           (heading-line? line)
           (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)]
-            (recur rest-lines (into new-out (process-heading-line line)) footnotes :normal nil))
+            (recur rest-lines (into new-out (process-heading-line line)) restant-footnotes :normal nil))
 
           (list-item? line)
           (let [new-out (if (= state :list) out (conj out "\n\\startitemize"))]
-            (recur rest-lines (into new-out (process-list-item-line line)) footnotes :list nil))
+            (recur rest-lines (into new-out (process-list-item-line line)) restant-footnotes :list nil))
 
           :else
           (let [new-out (if (= state :list) (conj out "\\stopitemize\n") out)
-                [updated-footnotes updated-line] (fn/replace-footnotes line footnotes)]
-            (recur rest-lines (into new-out (process-text-line updated-line state active-block footnotes)) updated-footnotes :normal active-block)))))))
+                [updated-line updated-footnotes] (fn/replace-footnotes line restant-footnotes)]
+            (recur rest-lines (into new-out (process-text-line updated-line state active-block)) updated-footnotes :normal active-block)))))))

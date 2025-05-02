@@ -1,24 +1,12 @@
 @@comment: It's recommended that you read the PDF version as GitHub doesn't parse Orgmode properly and you'll be missing a fair amount of content, such as footnotes.@@.
 
-# * Tasks
-# ** TODO Somewhere mention how democracy is a failed model
-# Lobbying and all that. Hijacked by the arsehole of Trump. Freedom of press down (Trump) to unprecedented times.
-
-# ** TODO Tourism a global problem
-
-# https://www.bbc.com/travel/article/20240522-the-worlds-revolt-against-bad-tourists
-
-# ** TODO Add living rapidly decreasing living standards across the globe
-# In the intro
-# The US goes down since the 70s.
-
 ** Preamble
 On Christmas Day of 2019, my long-time good friend Patricia entered a spontaneous trance and spoke as if guided by a deeper intelligence. Though she retained only the feeling, the message was clear: a global collapse is approaching. It won’t be instant or explosive, but will unfold like falling dominoes—triggered by the failure of the financial system. The collapse will strip away illusions: of stability, of wealth, of control. Many will suffer, and many will die—not as punishment, but as a necessary rebalancing. What follows is not the end, but the beginning of a simpler life rooted in essentials: food, shelter, love, and care. Those who align with what truly matters will find themselves prepared—not through stockpiles, but through inner clarity and communal strength.
 
 #+begin_quote Patricia
 I could be wrong but I believe that the cause will be the crash of financial systems. I suspect the trigger will be currency failures and that they will bring down stock markets, huge corporations and banks. That in turn will filter down to the ordinary man. I believe that this is what the markets thought was happening the last time and did everything to stave off but in doing so they have further undermined them so what little foundations and safety nets they had are now gone and they simply do not have the resilience for what is coming despite all their bank stress test talk. After all, if money fails then how can organisations that have money as their product/service survive?
 
-In my opinion money has to fail because it is the single largest bubble in history. When bankers disassociated currency from gold in Bretton Woods after the Second World War (because they were bankrupt thanks to military spending) they created a pretence that money had value but what they did was con the public that a piece of paper was worth \$x. Now it is even worse because we don’t have pieces of paper but ones and zeros in computers and those ones and zeros can evaporate in fractions of a second. When people lose trust in currency the whole edifice has to fall. It is about time. Right now the billionaires invest at unrealistic valuations in startups and drive their value up and up by incentivising management to raise the stock price continuously. Then those same investors, with their insider knowledge, tip each other off and they get out of the investment leaving the ordinary man’s pension and savings funds to pick up stock that will in a matter of time plummet in value.
+In my opinion (fiat) money has to fail because it is the single largest bubble in history. When bankers disassociated currency from gold in Bretton Woods after the Second World War (because they were bankrupt thanks to military spending) they created a pretence that money had value but what they did was con the public that a piece of paper was worth \$x. Now it is even worse because we don’t have pieces of paper but ones and zeros in computers and those ones and zeros can evaporate in fractions of a second. When people lose trust in currency the whole edifice has to fall. It is about time. Right now the billionaires invest at unrealistic valuations in startups and drive their value up and up by incentivising management to raise the stock price continuously. Then those same investors, with their insider knowledge, tip each other off and they get out of the investment leaving the ordinary man’s pension and savings funds to pick up stock that will in a matter of time plummet in value.
 
 Because the consequences of all this carry-on can be hidden from the ordinary man for a long time by operating Ponzi-like schemes to pay the early people’s pensions, the money people have been getting away with it. But in time the Ponzi-effect runs out of liquid cash and can no longer pay out and then the house of cards collapses rapidly but it falls like a house of cards (or dominos) where is spreads by contagion - the whole lot does not fall in one go like an explosion. So we will see early signs if we keep our eyes and ears open.
 
@@ -43,6 +31,18 @@ The fact that the collapse is talked about by normal people means that it is no 
 #+end_quote
 
 This book however, is not alarmistic: I explain what is going on and why, so people understand what is it that went wrong and why the old system must fail and why is that a good thing. Once we get that out of the way, I want to get into what to replace it with. Welcome to the New World.
+
+# * Tasks
+# ** TODO Somewhere mention how democracy is a failed model
+# Lobbying and all that. Hijacked by the arsehole of Trump. Freedom of press down (Trump) to unprecedented times.
+
+# ** TODO Tourism a global problem
+
+# https://www.bbc.com/travel/article/20240522-the-worlds-revolt-against-bad-tourists
+
+# ** TODO Add living rapidly decreasing living standards across the globe
+# In the intro
+# The US goes down since the 70s.
 
 * Introduction
 The collapse of our global systems was never a question of /if/ — only /when/. Built on endless growth in a finite world, they were designed to fail. Debt spirals, ecological exhaustion, social disintegration: the cracks are now impossible to hide.
